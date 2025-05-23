@@ -1,0 +1,101 @@
+<app-side-bar></app-side-bar>
+<!-- STAT CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white p-4 rounded shadow">📦 Inventory Items: {{ inventory.length }}</div>
+  <div class="bg-white p-4 rounded shadow">🔻 Low Stock Items: {{ lowStockCount }}</div>
+  <div class="bg-white p-4 rounded shadow">📬 Orders: {{ orders.length }}</div>
+  <div class="bg-white p-4 rounded shadow">⏳ Pending Orders: {{ pendingOrders }}</div>
+</div>
+
+<!-- INVENTORY BAR CHART -->
+<!-- <div class="bg-white p-4 rounded shadow mb-6">
+  <h3 class="text-lg font-semibold mb-2">Inventory Stock Levels</h3>
+  <ngx-charts-bar-vertical
+    [results]="inventoryChartData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="false"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    xAxisLabel="Item"
+    yAxisLabel="Stock"
+    [scheme]="'cool'">
+  </ngx-charts-bar-vertical>
+</div> -->
+
+<h2 class="text-xl font-semibold mt-6 mb-2">📦 Inventory Stock Levels</h2>
+
+<ngx-charts-bar-vertical
+  [view]="[600, 300]"
+  [scheme]="colorScheme"
+  [results]="inventoryChartData"
+  [gradient]="false"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="false"
+  [showDataLabel]="true"
+  [animations]="true">
+</ngx-charts-bar-vertical>
+
+<h2 class="text-xl font-semibold mt-6 mb-2">📈 Order Status Overview</h2>
+
+<ngx-charts-pie-chart
+  [view]="[600, 300]"
+  [scheme]="colorScheme"
+  [results]="orderStatusData"
+  [legend]="true"
+  [explodeSlices]="false"
+  [labels]="true"
+  [doughnut]="false"
+  [animations]="true">
+</ngx-charts-pie-chart>
+
+<!-- 🔔 Low Stock Alert Section -->
+<div *ngIf="lowStockItems.length > 0" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow mb-4">
+  <p class="font-semibold">⚠️ Low Stock Alert</p>
+  <p>{{ lowStockCount }} item(s) need restocking:</p>
+  <ul class="list-disc list-inside mt-2">
+    <li *ngFor="let item of lowStockItems">
+      {{ item.name }} (Stock: {{ item.stock }}, Reorder Level: {{ item.reorderLevel }})
+    </li>
+  </ul>
+</div>
+<div *ngIf="lowStockItems.length === 0" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow mb-4">
+  ✅ All inventory levels are healthy.
+</div>
+
+<div class="mt-4">
+  <h3>Daily Inventory Usage</h3>
+  <ngx-charts-bar-vertical
+    [view]="[600, 300]"
+    [scheme]="colorScheme"
+    [results]="dailyUsageChartData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="false"
+    [showDataLabel]="true"
+    [animations]="true">
+  </ngx-charts-bar-vertical>
+</div>
+
+
+<table class="w-full text-left border border-gray-300 rounded">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="p-2">Item</th>
+      <th class="p-2">Stock</th>
+      <th class="p-2">Avg Daily Usage</th>
+      <th class="p-2">Days Left</th>
+      <th class="p-2">Reorder Qty</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of aiInventoryInsights" class="hover:bg-gray-50">
+      <td class="p-2">{{ item.name }}</td>
+      <td class="p-2">{{ item.stock }}</td>
+      <td class="p-2">{{ item.avgDailyUsage }}</td>
+      <td class="p-2">{{ item.predictedDaysLeft }}</td>
+      <td class="p-2 font-semibold text-red-600">{{ item.reorderQuantity }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,21 @@
+<h2>Add New Order</h2>
+<form (ngSubmit)="addOrder()">
+  <div *ngFor="let item of items; let i = index">
+    <select [(ngModel)]="item.productId" name="product{{i}}" (change)="onProductChange(i)" required>
+      <option value="" disabled selected>Select product</option>
+      <option *ngFor="let invItem of inventoryItems" [value]="invItem.id">{{ invItem.name }}</option>
+    </select>
+
+    <input type="number" [(ngModel)]="item.quantity" name="quantity{{i}}" min="1" (change)="onQuantityChange()" required />
+    <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice{{i}}" (change)="onQuantityChange()" placeholder="Unit Price" required />
+
+    <span>Total: {{ item.totalPrice }}</span>
+
+    <button type="button" (click)="removeItemRow(i)" *ngIf="items.length > 1">Remove</button>
+  </div>
+  <button type="button" (click)="addItemRow()">Add Item</button>
+
+  <p><strong>Total Price:</strong> {{ totalPrice }}</p>
+
+  <button type="submit">Submit Order</button>
+</form>

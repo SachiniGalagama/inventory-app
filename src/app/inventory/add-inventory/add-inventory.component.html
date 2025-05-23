@@ -1,0 +1,9 @@
+<h2>Add Inventory Item</h2>
+<form (ngSubmit)="addItem()">
+  <label>Name: <input [(ngModel)]="item.name" name="name" required /></label><br />
+  <label>Category: <input [(ngModel)]="item.category" name="category" required /></label><br />
+  <label>Stock: <input [(ngModel)]="item.stock" name="stock" type="number" required /></label><br />
+  <label>Unit Price: <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required /></label><br />
+  <label>Reorder Level: <input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required /></label><br />
+  <button type="submit">Add</button>
+</form>

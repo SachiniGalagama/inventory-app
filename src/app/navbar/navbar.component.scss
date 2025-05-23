@@ -1,0 +1,49 @@
+.nav-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 50px 10px 50px;
+    position: fixed;
+    box-shadow: 0 0 4px;
+    background-color: white;
+}
+
+.brand-page{
+    display: flex;
+    align-items: baseline;
+}
+
+.page{
+    margin-left:80px ;
+    font-size: 20px;
+}
+.brand-name{
+    color: #36018b;
+}
+.search{
+    border: none;
+}
+
+.search-bar{
+    border: 1px solid #a9a8a8;
+    height: fit-content;
+    padding: 5px 10px;
+    border-radius: 25px;
+    margin-left: 10px;
+}
+
+.profile img{
+    margin-left: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+.notifications i{
+    font-size: 25px;
+}
+.navbar-icons{
+    display: flex;
+    align-items: center;
+}
