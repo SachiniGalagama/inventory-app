@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-order-list',
   standalone: false,
   templateUrl: './order-list.component.html',
+  styleUrl: './order-list.component.scss'
 })
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];

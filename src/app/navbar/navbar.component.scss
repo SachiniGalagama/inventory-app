@@ -2,22 +2,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    padding: 10px 50px 10px 50px;
+    padding: 10px 30px 10px 30px;
     position: fixed;
-    box-shadow: 0 0 4px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     background-color: white;
+    margin-left: 220px;
+    width: 83%;
 }
 
-.brand-page{
-    display: flex;
-    align-items: baseline;
-}
 
-.page{
-    margin-left:80px ;
-    font-size: 20px;
-}
 .brand-name{
     color: #36018b;
 }

@@ -7,6 +7,7 @@ import { UsageService } from '../services/usage.service';
   selector: 'app-dashboard',
   standalone:false,
   templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss'
 })
 
 
@@ -21,12 +22,15 @@ export class DashboardComponent implements OnInit {
   aiInventoryInsights: any[] = [];
   colorScheme: string = 'vivid';
   dailyUsageChartData: any[] = [];
+  forecast: number[] = [];
+
 
 
 constructor(
   private dashboardService: DashboardService,
   private aiService: DashboardAiService,
-  private usageService: UsageService
+  private usageService: UsageService,
+  
 ) {}
   
 
@@ -59,7 +63,12 @@ this.usageService.getDailyUsage(today).subscribe(data => {
     };
   });
 });
-  });
+this.dashboardService.getForecast().subscribe(data => {
+      if (data?.predictions) {
+        this.forecast = data.predictions;
+      }
+    });  
+});
 
   this.dashboardService.getOrders().subscribe(data => {
     this.orders = data;

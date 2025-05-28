@@ -1,9 +1,25 @@
-<h2>Add Inventory Item</h2>
+<h4>Add Inventory Items</h4>
+
 <form (ngSubmit)="addItem()">
-  <label>Name: <input [(ngModel)]="item.name" name="name" required /></label><br />
-  <label>Category: <input [(ngModel)]="item.category" name="category" required /></label><br />
-  <label>Stock: <input [(ngModel)]="item.stock" name="stock" type="number" required /></label><br />
-  <label>Unit Price: <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required /></label><br />
-  <label>Reorder Level: <input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required /></label><br />
-  <button type="submit">Add</button>
+  <tr>
+    <td><label>Name: </label></td>
+    <td><input [(ngModel)]="item.name" name="name" required /></td>
+  </tr>
+  <tr>
+    <td><label>Category </label></td>
+    <td><input [(ngModel)]="item.category" name="category" required /></td>
+  </tr>
+  <tr>
+    <td><label>Stock: </label></td>
+    <td><input [(ngModel)]="item.stock" name="stock" type="number" required /></td>
+  </tr>
+  <tr>
+    <td><label>Unit Price: </label></td>
+    <td><input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required /></td>
+  </tr>
+  <tr>
+    <td><label>Reorder Level: </label></td>
+    <td><input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required /></td>
+  </tr>
+  <button class="submit text-white px-6 py-2 rounded" type="submit">Add</button>
 </form>

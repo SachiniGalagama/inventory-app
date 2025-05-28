@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-inventory-list',
   standalone:false,
   templateUrl: './inventory-list.component.html',
+  styleUrl: './inventory-list.component.scss'
 })
 export class InventoryListComponent implements OnInit {
   items: InventoryItem[] = [];

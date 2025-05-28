@@ -1,9 +1,20 @@
 <nav class="sidebar">
-    <ul>
-    <li><i class="fa-solid fa-house"></i> Dashboard</li>
-    <li><i class="fa-solid fa-box"></i> Inventory</li>
-    <li><i class="fa-solid fa-clipboard-list"></i> Orders</li>
-    <li><i class="fa-solid fa-chart-line"></i> Reports</li>
-    <li><i class="fa-solid fa-gear"></i> Settings</li>
+  <a routerLink="/dashboard"><div class="brand-name"><h4>INVENTRIA</h4></div></a>
+  <ul>
+    <li routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+    </li>
+    <li routerLinkActive="active-link">
+      <a routerLink="/inventory"><i class="fa-solid fa-box"></i> Inventory</a>
+    </li>
+    <li routerLinkActive="active-link">
+      <a routerLink="/orders"><i class="fa-solid fa-clipboard-list"></i> Orders</a>
+    </li>
+    <li>
+      <a routerLink=""><i class="fa-solid fa-chart-line"></i> Reports</a>
+    </li>
+    <li>
+      <a routerLink=""><i class="fa-solid fa-gear"></i> Settings</a>
+    </li>
   </ul>
 </nav>

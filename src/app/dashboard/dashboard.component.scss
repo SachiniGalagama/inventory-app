@@ -86,3 +86,21 @@
   align-items: center;
 }
 
+.stat-cards{
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.piechart{
+  box-shadow: #2c2c3a;
+}
+
+.chart-section{
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-card{
+  width: 250px;
+}

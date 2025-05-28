@@ -1,5 +1,9 @@
-<h2>Inventory List</h2>
-<table>
+<div class="head-section">
+  <h4>Add Inventory Item</h4>
+  <button class="add-new" routerLink="/inventory/add">Add New</button>
+</div>
+
+<table class="w-100">
   <tr>
     <th>Name</th><th>Category</th><th>Stock</th><th>Reorder</th><th>Actions</th>
   </tr>
@@ -8,7 +12,7 @@
     <td>{{ item.category }}</td>
     <td>{{ item.stock }}</td>
     <td>{{ item.reorderLevel }}</td>
-    <td>
+    <td class="actions">
       <button (click)="editItem(item)">Edit</button>
       <button (click)="deleteItem(item.id!)">Delete</button>
     </td>

@@ -7,6 +7,7 @@ import { InventoryItem } from '../../models/inventory.models';
   selector: 'app-add-inventory',
   standalone:false,
   templateUrl: './add-inventory.component.html',
+  styleUrl:'./add-inventory.component.scss'
 })
 export class AddInventoryComponent {
   item: Partial<InventoryItem> = {

@@ -26,6 +26,7 @@ import { AddOrderComponent } from './orders/add-order/add-order.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EditOrderComponent } from './orders/edit-order/edit-order.component';
+import { LowStockModalComponent } from './low-stock-modal/low-stock-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { EditOrderComponent } from './orders/edit-order/edit-order.component';
     InventoryListComponent,
     OrderListComponent,
     AddOrderComponent,
-    EditOrderComponent
+    EditOrderComponent,
+    LowStockModalComponent
   ],
   imports: [
     BrowserModule,

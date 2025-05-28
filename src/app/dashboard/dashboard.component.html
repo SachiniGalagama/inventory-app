@@ -1,10 +1,11 @@
-<app-side-bar></app-side-bar>
 <!-- STAT CARDS -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-  <div class="bg-white p-4 rounded shadow">📦 Inventory Items: {{ inventory.length }}</div>
-  <div class="bg-white p-4 rounded shadow">🔻 Low Stock Items: {{ lowStockCount }}</div>
-  <div class="bg-white p-4 rounded shadow">📬 Orders: {{ orders.length }}</div>
-  <div class="bg-white p-4 rounded shadow">⏳ Pending Orders: {{ pendingOrders }}</div>
+
+<h5>📋 Current System Status</h5>
+<div class="stat-cards d-flex gap-4 mb-6">
+  <div class="stat-card bg-white p-4 rounded shadow ">📦 Inventory Items: {{ inventory.length }}</div>
+  <div class="stat-card bg-white p-4 rounded shadow ">🔻 Low Stock Items: {{ lowStockCount }}</div>
+  <div class="stat-card bg-white p-4 rounded shadow ">📬 Orders: {{ orders.length }}</div>
+  <div class="stat-card bg-white p-4 rounded shadow ">⏳ Pending Orders: {{ pendingOrders }}</div>
 </div>
 
 <!-- INVENTORY BAR CHART -->
@@ -23,10 +24,13 @@
   </ngx-charts-bar-vertical>
 </div> -->
 
-<h2 class="text-xl font-semibold mt-6 mb-2">📦 Inventory Stock Levels</h2>
 
-<ngx-charts-bar-vertical
-  [view]="[600, 300]"
+<div class="chart-section d-flex">
+  <div class="charts-bar">
+  <h5 class="text-xl font-semibold mt-6 mb-2">📦 Inventory Stock Levels</h5>
+  <div class="barchart rounded shadow">
+    <ngx-charts-bar-vertical
+  [view]="[475, 300]"
   [scheme]="colorScheme"
   [results]="inventoryChartData"
   [gradient]="false"
@@ -36,11 +40,13 @@
   [showDataLabel]="true"
   [animations]="true">
 </ngx-charts-bar-vertical>
-
-<h2 class="text-xl font-semibold mt-6 mb-2">📈 Order Status Overview</h2>
-
-<ngx-charts-pie-chart
-  [view]="[600, 300]"
+  </div>
+</div>
+<div class="charts-pie">
+<h5 class="text-xl font-semibold mt-6 mb-2">📈 Order Status Overview</h5>
+<div class="piechart rounded shadow">
+  <ngx-charts-pie-chart
+  [view]="[475, 300]"
   [scheme]="colorScheme"
   [results]="orderStatusData"
   [legend]="true"
@@ -49,7 +55,9 @@
   [doughnut]="false"
   [animations]="true">
 </ngx-charts-pie-chart>
-
+</div>
+</div>
+</div>
 <!-- 🔔 Low Stock Alert Section -->
 <div *ngIf="lowStockItems.length > 0" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow mb-4">
   <p class="font-semibold">⚠️ Low Stock Alert</p>
@@ -99,3 +107,11 @@
     </tr>
   </tbody>
 </table>
+<div *ngIf="forecast.length > 0" class="forecast-section">
+  <h3>Forecast for the next 7 days</h3>
+  <ul>
+    <li *ngFor="let price of forecast; let i = index">
+      Day {{ i + 1 }}: Rs. {{ price | number:'1.2-2' }}
+    </li>
+  </ul>
+</div>
