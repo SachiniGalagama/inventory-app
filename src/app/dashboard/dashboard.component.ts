@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../services/dashboard.service';
 import { DashboardAiService } from '../services/dashboard-ai.service';
 import { UsageService } from '../services/usage.service';
+import { InventoryItem } from '../models/inventory.models';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,16 +15,17 @@ import { UsageService } from '../services/usage.service';
 export class DashboardComponent implements OnInit {
   inventory: any[] = [];
   orders: any[] = [];
-  lowStockCount = 0;
   pendingOrders = 0;
-  lowStockItems: any[] = [];
   inventoryChartData: any[] = [];
   orderStatusData: any[] = [];
   aiInventoryInsights: any[] = [];
   colorScheme: string = 'vivid';
   dailyUsageChartData: any[] = [];
   forecast: number[] = [];
-
+  showWelcomeMessage = true;
+showLowStockModal = false;
+lowStockItems: InventoryItem[] = [];
+lowStockCount = 0;
 
 
 constructor(
@@ -39,6 +41,9 @@ constructor(
     this.inventory = data;
     this.lowStockItems = data.filter(item => item.stock <= item.reorderLevel);
     this.lowStockCount = this.lowStockItems.length;
+    if (this.lowStockCount > 0) {
+      this.showLowStockModal = true; // show modal only if low stock exists
+    }
     this.inventoryChartData = this.inventory.map(item => ({
       name: item.name,
       value: item.stock
@@ -84,4 +89,9 @@ this.dashboardService.getForecast().subscribe(data => {
     }));
   });
 }
+
+onCloseModal() {
+  this.showLowStockModal = false;
+}
+
 }

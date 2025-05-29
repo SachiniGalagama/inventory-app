@@ -1,11 +1,22 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, Timestamp, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  Timestamp,
+  getDoc
+} from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { InventoryItem } from '../models/inventory.models';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
-  [x: string]: any;
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
@@ -61,5 +72,19 @@ export class InventoryService {
     const snapshot = await getDoc(itemRef);
     const data = snapshot.data();
     return data ? { id: itemId, ...data } as InventoryItem : null;
+  }
+
+  async getItemByName(name: string): Promise<InventoryItem | undefined> {
+    const userId = await this.getUserId();
+    const itemsRef = collection(this.firestore, 'inventory');
+    const q = query(itemsRef, where('name', '==', name), where('userId', '==', userId));
+    const snapshot = await getDocs(q);
+    
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      return { id: docSnap.id, ...docSnap.data() } as InventoryItem;
+    }
+    
+    return undefined;
   }
 }

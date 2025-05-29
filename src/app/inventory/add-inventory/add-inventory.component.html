@@ -1,25 +1,75 @@
 <h4>Add Inventory Items</h4>
+<div class="form-add-item bg-white space-y-4 col-6 rounded shadow">
+  <form (ngSubmit)="addItem()" #itemForm="ngForm" novalidate>
+  <div *ngIf="errorMessage" class="text-red-500 mb-2">{{ errorMessage }}</div>
 
-<form (ngSubmit)="addItem()">
   <tr>
-    <td><label>Name: </label></td>
-    <td><input [(ngModel)]="item.name" name="name" required /></td>
+    <td><label>Name:</label></td>
+    <td>
+      <input
+        [(ngModel)]="item.name"
+        (ngModelChange)="toLowerCaseName()"
+        name="name"
+        required
+        pattern="^[a-z ]+$"
+        #nameInput="ngModel"
+        placeholder="lowercase only"
+      />
+      <div *ngIf="nameInput.invalid && nameInput.touched" class="text-red-500 text-sm">
+        Name must contain only lowercase letters.
+      </div>
+    </td>
   </tr>
+
   <tr>
-    <td><label>Category </label></td>
-    <td><input [(ngModel)]="item.category" name="category" required /></td>
+    <td><label>Category:</label></td>
+    <td>
+      <input [(ngModel)]="item.category" name="category" required />
+    </td>
   </tr>
+
   <tr>
-    <td><label>Stock: </label></td>
-    <td><input [(ngModel)]="item.stock" name="stock" type="number" required /></td>
+    <td><label>Stock:</label></td>
+    <td>
+      <input [(ngModel)]="item.stock" name="stock" type="number" required min="0" />
+    </td>
   </tr>
+
   <tr>
-    <td><label>Unit Price: </label></td>
-    <td><input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required /></td>
+    <td><label>Unit Price:</label></td>
+    <td>
+      <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required min="0" />
+    </td>
   </tr>
+
   <tr>
-    <td><label>Reorder Level: </label></td>
-    <td><input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required /></td>
+    <td><label>Reorder Level:</label></td>
+    <td>
+      <input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required min="0" />
+    </td>
   </tr>
-  <button class="submit text-white px-6 py-2 rounded" type="submit">Add</button>
+
+  <div class="add-cancel w-100">
+    <p
+      class="text-primary "
+      type="button"
+      (click)="cancel()"
+    >
+      Cancel
+  </p>
+    <div class="mt-4">
+    <button
+      class="submit text-white px-6 py-2 rounded bg-green-600 hover:bg-green-700"
+      type="submit"
+      [disabled]="itemForm.invalid"
+    >
+      Add
+    </button>
+    
+  </div>
+  </div>
+
+  
 </form>
+
+</div>

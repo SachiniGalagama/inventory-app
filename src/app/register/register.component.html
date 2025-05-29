@@ -1,8 +1,16 @@
-<h2>Register</h2>
-<form (ngSubmit)="onRegister()">
-  <input [(ngModel)]="email" name="email" type="email" placeholder="Email" required />
-  <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
-  <button type="submit">Register</button>
-</form>
 
-<p>Already have an account? <a routerLink="/login">Login here</a></p>
+<div class="login-form rounded shadow">
+  <h4>Register</h4>
+  <form (ngSubmit)="onRegister()">
+    <tr>
+      <td class="label"><label for="email">Email: </label></td>
+      <td><input [(ngModel)]="email" name="email" type="email" placeholder="Email" required /></td>
+    </tr>
+    <tr>
+      <td class="label"><label for="password">Password: </label></td>
+      <td><input [(ngModel)]="password" name="password" type="password" placeholder="Password" required /></td>
+    </tr>
+  <button class="register-button rounded text-white" type="submit">Register</button>
+</form>
+<p>Do you have an account? <a routerLink="/login">Login here</a></p>
+</div>

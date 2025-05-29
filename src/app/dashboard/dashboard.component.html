@@ -58,7 +58,7 @@
 </div>
 </div>
 </div>
-<!-- 🔔 Low Stock Alert Section -->
+<!-- 🔔 Low Stock Alert Section
 <div *ngIf="lowStockItems.length > 0" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow mb-4">
   <p class="font-semibold">⚠️ Low Stock Alert</p>
   <p>{{ lowStockCount }} item(s) need restocking:</p>
@@ -70,7 +70,15 @@
 </div>
 <div *ngIf="lowStockItems.length === 0" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow mb-4">
   ✅ All inventory levels are healthy.
-</div>
+</div> -->
+
+<app-low-stock-modal
+  *ngIf="showLowStockModal"
+  [lowStockItems]="lowStockItems"
+  [lowStockCount]="lowStockCount"
+  (close)="onCloseModal()"
+  class="fixed bottom-4 right-4 z-50">
+</app-low-stock-modal>
 
 <div class="mt-4">
   <h3>Daily Inventory Usage</h3>

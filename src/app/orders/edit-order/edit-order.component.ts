@@ -9,6 +9,7 @@ import { InventoryService } from '../../services/inventory.service';
   selector: 'app-edit-order',
   standalone:false,
   templateUrl: './edit-order.component.html',
+  styleUrl:'./edit-order.component.scss'
 })
 export class EditOrderComponent implements OnInit {
   orderId!: string;

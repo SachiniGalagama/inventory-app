@@ -7,10 +7,13 @@ import { InventoryService } from '../../services/inventory.service';
   selector: 'app-edit-inventory',
   standalone:false,
   templateUrl: './edit-inventory.component.html',
+  styleUrl:'./edit-inventory.component.scss'
 })
 export class EditInventoryComponent implements OnInit {
   itemId!: string;
   item: Partial<InventoryItem> = {};
+    errorMessage: string = '';
+
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router) {}
 
@@ -24,4 +27,15 @@ export class EditInventoryComponent implements OnInit {
     await this.inventoryService.updateItem(this.itemId, this.item);
     this.router.navigate(['/inventory']);
   }
+
+  cancel() {
+    this.router.navigate(['/inventory']);
+  }
+
+  toLowerCaseName() {
+    if (this.item.name) {
+      this.item.name = this.item.name.toLowerCase();
+    }
+  }
+
 }
