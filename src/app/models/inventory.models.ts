@@ -1,10 +1,15 @@
+// models/inventory.models.ts
 export interface InventoryItem {
-  id?: string;
+  id: string;
   name: string;
   category: string;
   stock: number;
   reorderLevel: number;
-  unitPrice: number; // ✅ Add this line
-  createdAt: any;
-  userId: string;
+  unitPrice: number;
+  createdAt?: any;
+  userId?: string;
+
+  // Prediction Fields
+  avgDailyConsumption?: number;
+  daysUntilStockout?: number;
 }

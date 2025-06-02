@@ -6,20 +6,24 @@ import { AuthService } from '../auth.service';
   selector: 'app-register',
   standalone: false,
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onRegister() {
-    this.authService.register(this.email, this.password)
+    this.authService
+      .register(this.email, this.password)
       .then(() => {
         alert('Registration successful!');
         this.router.navigate(['/dashboard']);
       })
-      .catch(err => alert('Registration error: ' + err.message));
+      .catch((err) => alert('Registration error: ' + err.message));
   }
 }

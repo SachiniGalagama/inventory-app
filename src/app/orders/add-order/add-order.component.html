@@ -1,84 +1,139 @@
 <h2 class="text-xl font-bold mb-4">Add New Order</h2>
 
-<form (ngSubmit)="addOrder()" #orderForm="ngForm" class="space-y-4 col-6 rounded shadow">
-  <div *ngFor="let item of items; let i = index" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+<form
+  (ngSubmit)="addOrder()"
+  #orderForm="ngForm"
+  class="space-y-4 col-6 rounded shadow"
+>
+  <div
+    *ngFor="let item of items; let i = index"
+    class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200"
+  >
     <!-- Product Name -->
     <tr class="col-span-2 relative">
       <td><label class="block text-sm font-medium">Product Name</label></td>
-      <td><input
-        class="w-full border rounded px-2 py-1"
-        type="text"
-        [(ngModel)]="item.productName"
-        name="productName{{i}}"
-        (input)="suggestProductNames(i)"
-        (blur)="normalizeProductName(i)"
-        required
-        #productName="ngModel"
-        placeholder="Enter product name">
-      <p class="text-red-500 text-xs" *ngIf="productName.invalid && productName.touched">Product name is required.</p>
+      <td>
+        <input
+          class="w-full border rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="item.productName"
+          name="productName{{ i }}"
+          (input)="suggestProductNames(i)"
+          (blur)="normalizeProductName(i)"
+          required
+          #productName="ngModel"
+          placeholder="Enter product name"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="productName.invalid && productName.touched"
+        >
+          Product name is required.
+        </p>
 
-      <!-- Suggestions -->
-      <ul *ngIf="suggestions[i]?.length" class="absolute z-10 bg-white border mt-1 w-full max-h-32 overflow-y-auto rounded shadow">
-        <li *ngFor="let suggestion of suggestions[i]" class="px-2 py-1 hover:bg-blue-100 cursor-pointer" (click)="selectSuggestion(i, suggestion)">{{ suggestion }}</li>
-      </ul></td>
-      
+        <!-- Suggestions -->
+        <ul
+          *ngIf="suggestions[i]?.length"
+          class="absolute z-10 bg-white border mt-1 w-full max-h-32 overflow-y-auto rounded shadow"
+        >
+          <li
+            *ngFor="let suggestion of suggestions[i]"
+            class="px-2 py-1 hover:bg-blue-100 cursor-pointer"
+            (click)="selectSuggestion(i, suggestion)"
+          >
+            {{ suggestion }}
+          </li>
+        </ul>
+      </td>
     </tr>
 
     <!-- Quantity -->
     <tr>
       <td><label class="block text-sm font-medium">Quantity</label></td>
-      <td><input
-        type="number"
-        class="w-full border rounded px-2 py-1"
-        [(ngModel)]="item.quantity"
-        name="quantity{{i}}"
-        min="1"
-        required
-        #quantity="ngModel"
-        (change)="onQuantityChange()">
-      <p class="text-red-500 text-xs" *ngIf="quantity.invalid && quantity.touched">Quantity must be at least 1.</p>
-    </td>
-  </tr>
+      <td>
+        <input
+          type="number"
+          class="w-full border rounded px-2 py-1"
+          [(ngModel)]="item.quantity"
+          name="quantity{{ i }}"
+          min="1"
+          required
+          #quantity="ngModel"
+          (change)="onQuantityChange()"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="quantity.invalid && quantity.touched"
+        >
+          Quantity must be at least 1.
+        </p>
+      </td>
+    </tr>
 
     <!-- Unit Price -->
     <tr>
       <td><label class="block text-sm font-medium">Unit Price</label></td>
-      <td><input
-        type="number"
-        class="w-full border rounded px-2 py-1"
-        [(ngModel)]="item.unitPrice"
-        name="unitPrice{{i}}"
-        min="0.01"
-        required
-        #unitPrice="ngModel"
-        placeholder="Unit Price"
-        (change)="onQuantityChange()">
-      <p class="text-red-500 text-xs" *ngIf="unitPrice.invalid && unitPrice.touched">Price must be positive.</p></td>
-      
-      </tr>
+      <td>
+        <input
+          type="number"
+          class="w-full border rounded px-2 py-1"
+          [(ngModel)]="item.unitPrice"
+          name="unitPrice{{ i }}"
+          min="0.01"
+          required
+          #unitPrice="ngModel"
+          placeholder="Unit Price"
+          (change)="onQuantityChange()"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="unitPrice.invalid && unitPrice.touched"
+        >
+          Price must be positive.
+        </p>
+      </td>
+    </tr>
 
     <!-- Total & Remove -->
     <tr class="flex flex-col justify-between items-start">
-      <td><span class="text-sm font-semibold">Total: {{ item.totalPrice }}</span></td>
-      <td><button type="button" (click)="removeItemRow(i)" *ngIf="items.length > 1" class="text-red-600 text-sm hover:underline text-white px-6 py-2 rounded ">Remove</button></td>
+      <td>
+        <span class="text-sm font-semibold">Total: {{ item.totalPrice }}</span>
+      </td>
+      <td>
+        <button
+          type="button"
+          (click)="removeItemRow(i)"
+          *ngIf="items.length > 1"
+          class="text-red-600 text-sm hover:underline text-white px-6 py-2 rounded"
+        >
+          Remove
+        </button>
+      </td>
     </tr>
   </div>
 
   <!-- Add Item Button -->
-  
+
   <div class="submit-section">
     <!-- Total Price -->
-  <p class="text-lg font-semibold mt-4">Total Price: {{ totalPrice }}</p>
-  <div class="add-submit">
-    <button type="button" (click)="addItemRow()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-    + Add Item
-    </button>
+    <p class="text-lg font-semibold mt-4">Total Price: {{ totalPrice }}</p>
+    <div class="add-submit">
+      <button
+        type="button"
+        (click)="addItemRow()"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        + Add Item
+      </button>
 
-     <!-- Submit -->
-  <button type="submit" [disabled]="orderForm.invalid" class="mt-2 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-    Submit Order
-  </button>
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="orderForm.invalid"
+        class="mt-2 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+      >
+        Submit Order
+      </button>
+    </div>
   </div>
-</div>
-  
 </form>

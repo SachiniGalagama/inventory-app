@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ForecastService {
   constructor(private firestore: Firestore) {}

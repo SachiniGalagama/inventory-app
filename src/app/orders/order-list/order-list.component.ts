@@ -7,12 +7,15 @@ import { Router } from '@angular/router';
   selector: 'app-order-list',
   standalone: false,
   templateUrl: './order-list.component.html',
-  styleUrl: './order-list.component.scss'
+  styleUrl: './order-list.component.scss',
 })
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];
 
-  constructor(private orderService: OrderService, private router: Router) {}
+  constructor(
+    private orderService: OrderService,
+    private router: Router,
+  ) {}
 
   async ngOnInit() {
     this.orders = await this.orderService.getOrders();
@@ -25,7 +28,7 @@ export class OrderListComponent implements OnInit {
   async deleteOrder(id: string) {
     if (confirm('Are you sure to delete this order?')) {
       await this.orderService.deleteOrder(id);
-      this.orders = this.orders.filter(o => o.id !== id);
+      this.orders = this.orders.filter((o) => o.id !== id);
     }
   }
 }

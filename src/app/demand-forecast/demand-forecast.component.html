@@ -1,0 +1,1 @@
+<h2>Demand Levels</h2> <table> <thead> <tr> <th>Item</th> <th>Category</th> <th>Sold Qty</th> <th>Demand</th> </tr> </thead> <tbody> <tr *ngFor="let item of demandData"> <td>{{ item.name }}</td> <td>{{ item.category }}</td> <td>{{ item.soldQty }}</td> <td> <span [ngClass]="item.demand.toLowerCase()">{{ item.demand }}</span> </td> </tr> </tbody> </table>

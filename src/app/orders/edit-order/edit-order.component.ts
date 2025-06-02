@@ -7,9 +7,9 @@ import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-edit-order',
-  standalone:false,
+  standalone: false,
   templateUrl: './edit-order.component.html',
-  styleUrl:'./edit-order.component.scss'
+  styleUrl: './edit-order.component.scss',
 })
 export class EditOrderComponent implements OnInit {
   orderId!: string;
@@ -22,16 +22,16 @@ export class EditOrderComponent implements OnInit {
     private route: ActivatedRoute,
     private orderService: OrderService,
     private inventoryService: InventoryService,
-    private router: Router
+    private router: Router,
   ) {}
 
   async ngOnInit() {
     this.orderId = this.route.snapshot.paramMap.get('id')!;
     const order = await this.orderService.getOrderById(this.orderId);
     if (order) {
-      this.items = order.items.map(item => ({
+      this.items = order.items.map((item) => ({
         ...item,
-        totalPrice: item.quantity * item.unitPrice
+        totalPrice: item.quantity * item.unitPrice,
       }));
       this.totalPrice = order.totalPrice;
       this.status = order.status;
@@ -40,7 +40,13 @@ export class EditOrderComponent implements OnInit {
   }
 
   addItemRow() {
-    this.items.push({ productId: '', productName: '', quantity: 1, unitPrice: 0, totalPrice: 0 });
+    this.items.push({
+      productId: '',
+      productName: '',
+      quantity: 1,
+      unitPrice: 0,
+      totalPrice: 0,
+    });
   }
 
   removeItemRow(index: number) {
@@ -49,31 +55,37 @@ export class EditOrderComponent implements OnInit {
   }
 
   onProductChange(index: number) {
-    const selected = this.inventoryItems.find(i => i.id === this.items[index].productId);
+    const selected = this.inventoryItems.find(
+      (i) => i.id === this.items[index].productId,
+    );
     if (selected) {
       this.items[index].productName = selected.name;
       this.items[index].unitPrice = selected.unitPrice || 0;
-      this.items[index].totalPrice = this.items[index].unitPrice * this.items[index].quantity;
+      this.items[index].totalPrice =
+        this.items[index].unitPrice * this.items[index].quantity;
       this.calculateTotal();
     }
   }
 
   onQuantityChange() {
-    this.items.forEach(item => {
+    this.items.forEach((item) => {
       item.totalPrice = item.quantity * item.unitPrice;
     });
     this.calculateTotal();
   }
 
   calculateTotal() {
-    this.totalPrice = this.items.reduce((sum, item) => sum + item.totalPrice, 0);
+    this.totalPrice = this.items.reduce(
+      (sum, item) => sum + item.totalPrice,
+      0,
+    );
   }
 
   async updateOrder() {
     const updatedOrder: Partial<Order> = {
       items: this.items,
       totalPrice: this.totalPrice,
-      status: this.status
+      status: this.status,
     };
 
     await this.orderService.updateOrder(this.orderId, updatedOrder);

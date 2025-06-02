@@ -1,45 +1,73 @@
-<div class="form bg-white ">
+<div class="form bg-white">
   <h4>Edit Order</h4>
-<form (ngSubmit)="updateOrder()">
-  <div *ngFor="let item of items; let i = index">
-    <label>
-      Product:
-      <select [(ngModel)]="item.productId" name="product{{i}}" (change)="onProductChange(i)" required>
-        <option value="" disabled>Select product</option>
-        <option *ngFor="let invItem of inventoryItems" [value]="invItem.id">{{ invItem.name }}</option>
-      </select>
-    </label>
+  <form (ngSubmit)="updateOrder()">
+    <div *ngFor="let item of items; let i = index">
+      <label>
+        Product:
+        <select
+          [(ngModel)]="item.productId"
+          name="product{{ i }}"
+          (change)="onProductChange(i)"
+          required
+        >
+          <option value="" disabled>Select product</option>
+          <option *ngFor="let invItem of inventoryItems" [value]="invItem.id">
+            {{ invItem.name }}
+          </option>
+        </select>
+      </label>
 
-    <label>
-      Quantity:
-      <input type="number" [(ngModel)]="item.quantity" name="quantity{{i}}" min="1" (change)="onQuantityChange()" required />
-    </label>
+      <label>
+        Quantity:
+        <input
+          type="number"
+          [(ngModel)]="item.quantity"
+          name="quantity{{ i }}"
+          min="1"
+          (change)="onQuantityChange()"
+          required
+        />
+      </label>
 
-    <label>
-      Unit Price:
-      <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice{{i}}" min="0" (change)="onQuantityChange()" required />
-    </label>
-    <label class="">
-    Status:
-    <select [(ngModel)]="status" name="status">
-      <option value="Pending">Pending</option>
-      <option value="Completed">Completed</option>
-    </select>
-  </label>
+      <label>
+        Unit Price:
+        <input
+          type="number"
+          [(ngModel)]="item.unitPrice"
+          name="unitPrice{{ i }}"
+          min="0"
+          (change)="onQuantityChange()"
+          required
+        />
+      </label>
+      <label class="">
+        Status:
+        <select [(ngModel)]="status" name="status">
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </label>
 
-    <p>Subtotal: {{ item.quantity * item.unitPrice | number:'1.2-2' }}</p>
+      <p>Subtotal: {{ item.quantity * item.unitPrice | number: "1.2-2" }}</p>
 
-    <button type="button" (click)="removeItemRow(i)" *ngIf="items.length > 1">Remove</button>
-    <hr />
-  </div>
+      <button type="button" (click)="removeItemRow(i)" *ngIf="items.length > 1">
+        Remove
+      </button>
+      <hr />
+    </div>
 
-  <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" type="button" (click)="addItemRow()">Add Item</button>
+    <button
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      type="button"
+      (click)="addItemRow()"
+    >
+      Add Item
+    </button>
 
-  
+    <p><strong>Total Price:</strong> {{ totalPrice | currency }}</p>
 
-  <p><strong>Total Price:</strong> {{ totalPrice | currency }}</p>
-
-  <button class="rounded text-white px-4 py-2" type="submit">Update Order</button>
-</form>
-
+    <button class="rounded text-white px-4 py-2" type="submit">
+      Update Order
+    </button>
+  </form>
 </div>

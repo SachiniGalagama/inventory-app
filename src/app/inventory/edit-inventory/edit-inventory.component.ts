@@ -5,17 +5,20 @@ import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-edit-inventory',
-  standalone:false,
+  standalone: false,
   templateUrl: './edit-inventory.component.html',
-  styleUrl:'./edit-inventory.component.scss'
+  styleUrl: './edit-inventory.component.scss',
 })
 export class EditInventoryComponent implements OnInit {
   itemId!: string;
   item: Partial<InventoryItem> = {};
-    errorMessage: string = '';
+  errorMessage: string = '';
 
-
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private inventoryService: InventoryService,
+    private router: Router,
+  ) {}
 
   async ngOnInit() {
     this.itemId = this.route.snapshot.paramMap.get('id')!;
@@ -37,5 +40,4 @@ export class EditInventoryComponent implements OnInit {
       this.item.name = this.item.name.toLowerCase();
     }
   }
-
 }

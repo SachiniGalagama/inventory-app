@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-side-bar',
   standalone: false,
   templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.scss'
+  styleUrl: './side-bar.component.scss',
 })
-export class SideBarComponent {
-
-}
+export class SideBarComponent {}

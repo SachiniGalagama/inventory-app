@@ -1,9 +1,9 @@
-.actions{
-    gap: 10px;
+.actions {
+  gap: 10px;
 }
 
-
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
@@ -15,8 +15,8 @@ th {
   font-weight: 600;
 }
 
-td{
-    background-color: #ffffff;
+td {
+  background-color: #ffffff;
 }
 
 button {
@@ -27,9 +27,8 @@ button {
   cursor: pointer;
 }
 
-
 button:first-child {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -38,11 +37,11 @@ button:last-child {
   color: white;
 }
 
-.add-new{
+.add-new {
   background-color: #36018b !important;
 }
 
-.head-section{
+.head-section {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;

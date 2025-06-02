@@ -1,77 +1,86 @@
-
 <h4>Edit Inventory Item</h4>
 <div class="form-add-item bg-white space-y-4 col-6 rounded shadow">
   <form (ngSubmit)="updateItem()" #itemForm="ngForm" novalidate>
-  <div *ngIf="errorMessage" class="text-red-500 mb-2">{{ errorMessage }}</div>
+    <div *ngIf="errorMessage" class="text-red-500 mb-2">{{ errorMessage }}</div>
 
-  <tr>
-    <td><label>Name:</label></td>
-    <td>
-      <input
-        [(ngModel)]="item.name"
-        (ngModelChange)="toLowerCaseName()"
-        name="name"
-        required
-        pattern="^[a-z ]+$"
-        #nameInput="ngModel"
-        placeholder="lowercase only"
-      />
-      <div *ngIf="nameInput.invalid && nameInput.touched" class="text-red-500 text-sm">
-        Name must contain only lowercase letters.
+    <tr>
+      <td><label>Name:</label></td>
+      <td>
+        <input
+          [(ngModel)]="item.name"
+          (ngModelChange)="toLowerCaseName()"
+          name="name"
+          required
+          pattern="^[a-z ]+$"
+          #nameInput="ngModel"
+          placeholder="lowercase only"
+        />
+        <div
+          *ngIf="nameInput.invalid && nameInput.touched"
+          class="text-red-500 text-sm"
+        >
+          Name must contain only lowercase letters.
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Category:</label></td>
+      <td>
+        <input [(ngModel)]="item.category" name="category" required />
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Stock:</label></td>
+      <td>
+        <input
+          [(ngModel)]="item.stock"
+          name="stock"
+          type="number"
+          required
+          min="0"
+        />
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Unit Price:</label></td>
+      <td>
+        <input
+          type="number"
+          [(ngModel)]="item.unitPrice"
+          name="unitPrice"
+          required
+          min="0"
+        />
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Reorder Level:</label></td>
+      <td>
+        <input
+          [(ngModel)]="item.reorderLevel"
+          name="reorderLevel"
+          type="number"
+          required
+          min="0"
+        />
+      </td>
+    </tr>
+
+    <div class="add-cancel w-100">
+      <p class="text-primary" type="button" (click)="cancel()">Cancel</p>
+      <div class="mt-4">
+        <button
+          class="submit text-white px-6 py-2 rounded bg-green-600 hover:bg-green-700"
+          type="submit"
+          [disabled]="itemForm.invalid"
+        >
+          Update
+        </button>
       </div>
-    </td>
-  </tr>
-
-  <tr>
-    <td><label>Category:</label></td>
-    <td>
-      <input [(ngModel)]="item.category" name="category" required />
-    </td>
-  </tr>
-
-  <tr>
-    <td><label>Stock:</label></td>
-    <td>
-      <input [(ngModel)]="item.stock" name="stock" type="number" required min="0" />
-    </td>
-  </tr>
-
-  <tr>
-    <td><label>Unit Price:</label></td>
-    <td>
-      <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice" required min="0" />
-    </td>
-  </tr>
-
-  <tr>
-    <td><label>Reorder Level:</label></td>
-    <td>
-      <input [(ngModel)]="item.reorderLevel" name="reorderLevel" type="number" required min="0" />
-    </td>
-  </tr>
-
-  <div class="add-cancel w-100">
-    <p
-      class="text-primary "
-      type="button"
-      (click)="cancel()"
-    >
-      Cancel
-  </p>
-    <div class="mt-4">
-    <button
-      class="submit text-white px-6 py-2 rounded bg-green-600 hover:bg-green-700"
-      type="submit"
-      [disabled]="itemForm.invalid"
-    >
-      Update
-    </button>
-    
-  </div>
-  </div>
-
-  
-</form>
-
+    </div>
+  </form>
 </div>
-

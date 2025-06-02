@@ -7,7 +7,7 @@ import { InventoryItem } from '../../models/inventory.models';
   selector: 'app-add-inventory',
   standalone: false,
   templateUrl: './add-inventory.component.html',
-  styleUrl: './add-inventory.component.scss'
+  styleUrl: './add-inventory.component.scss',
 })
 export class AddInventoryComponent {
   item: Partial<InventoryItem> = {
@@ -15,12 +15,15 @@ export class AddInventoryComponent {
     category: '',
     stock: 0,
     reorderLevel: 0,
-    unitPrice: 0
+    unitPrice: 0,
   };
 
   errorMessage: string = '';
 
-  constructor(private inventoryService: InventoryService, private router: Router) {}
+  constructor(
+    private inventoryService: InventoryService,
+    private router: Router,
+  ) {}
 
   toLowerCaseName() {
     if (this.item.name) {
@@ -55,11 +58,15 @@ export class AddInventoryComponent {
       return false;
     }
     if (
-      this.item.stock == null || this.item.stock < 0 ||
-      this.item.unitPrice == null || this.item.unitPrice < 0 ||
-      this.item.reorderLevel == null || this.item.reorderLevel < 0
+      this.item.stock == null ||
+      this.item.stock < 0 ||
+      this.item.unitPrice == null ||
+      this.item.unitPrice < 0 ||
+      this.item.reorderLevel == null ||
+      this.item.reorderLevel < 0
     ) {
-      this.errorMessage = 'Stock, price, and reorder level must be non-negative numbers.';
+      this.errorMessage =
+        'Stock, price, and reorder level must be non-negative numbers.';
       return false;
     }
     return true;

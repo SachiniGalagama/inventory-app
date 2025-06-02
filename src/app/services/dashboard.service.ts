@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  docData,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -22,18 +28,25 @@ export class DashboardService {
   getDashboardStats() {
     return this.getOrders().pipe(
       map((orders) => {
-        const totalRevenue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+        const totalRevenue = orders.reduce(
+          (sum, o) => sum + (o.totalAmount || 0),
+          0,
+        );
         const totalOrders = orders.length;
         return { totalRevenue, totalOrders };
-      })
+      }),
     );
   }
 
-  getForecast(): Observable<{ generated_at: any; predictions: number[] } | null> {
+  getForecast(): Observable<{
+    generated_at: any;
+    predictions: number[];
+  } | null> {
     const forecastDocRef = doc(this.firestore, 'forecast/latest');
     return docData(forecastDocRef, { idField: 'id' }).pipe(
-      map((doc) => (doc ? doc as { generated_at: any; predictions: number[] } : null))
+      map((doc) =>
+        doc ? (doc as { generated_at: any; predictions: number[] }) : null,
+      ),
     );
   }
-
 }

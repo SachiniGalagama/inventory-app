@@ -1,4 +1,5 @@
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
@@ -27,7 +28,7 @@ button {
 }
 
 button:first-child {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -36,11 +37,11 @@ button:last-child {
   color: white;
 }
 
-.orders-head{
-    justify-content: space-between;
-    margin-bottom: 20px;
+.orders-head {
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.add-new{
-    background-color:#36018b !important ;
+.add-new {
+  background-color: #36018b !important ;
 }

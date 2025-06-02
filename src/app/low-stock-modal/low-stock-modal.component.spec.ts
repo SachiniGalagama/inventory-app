@@ -8,9 +8,8 @@ describe('LowStockModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LowStockModalComponent]
-    })
-    .compileComponents();
+      declarations: [LowStockModalComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LowStockModalComponent);
     component = fixture.componentInstance;

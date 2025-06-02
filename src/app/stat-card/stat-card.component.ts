@@ -3,9 +3,9 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-stat-card',
-    standalone: false,
+  standalone: false,
   templateUrl: './stat-card.component.html',
-  styleUrls: ['./stat-card.component.scss']
+  styleUrls: ['./stat-card.component.scss'],
 })
 export class StatCardComponent {
   @Input() icon: string = '';

@@ -4,19 +4,23 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone:false,
+  standalone: false,
   templateUrl: './login.component.html',
-  styleUrl:'./login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onLogin() {
-    this.authService.login(this.email, this.password)
+    this.authService
+      .login(this.email, this.password)
       .then(() => this.router.navigate(['/dashboard']))
-      .catch(err => alert(err.message));
+      .catch((err) => alert(err.message));
   }
 }

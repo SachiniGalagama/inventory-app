@@ -13,7 +13,7 @@
   </tr>
   <tr *ngFor="let order of orders">
     <td>{{ order.id }}</td>
-    <td>{{ order.orderDate?.toDate() | date:'short' }}</td>
+    <td>{{ order.orderDate?.toDate() | date: "short" }}</td>
     <td>{{ order.totalPrice }}</td>
     <td>{{ order.status }}</td>
     <td>

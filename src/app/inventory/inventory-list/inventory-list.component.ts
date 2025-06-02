@@ -5,14 +5,17 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inventory-list',
-  standalone:false,
+  standalone: false,
   templateUrl: './inventory-list.component.html',
-  styleUrl: './inventory-list.component.scss'
+  styleUrl: './inventory-list.component.scss',
 })
 export class InventoryListComponent implements OnInit {
   items: InventoryItem[] = [];
 
-  constructor(private inventoryService: InventoryService, private router: Router) {}
+  constructor(
+    private inventoryService: InventoryService,
+    private router: Router,
+  ) {}
 
   async ngOnInit() {
     this.items = await this.inventoryService.getItems();
@@ -25,7 +28,7 @@ export class InventoryListComponent implements OnInit {
   async deleteItem(id: string) {
     if (confirm('Are you sure?')) {
       await this.inventoryService.deleteItem(id);
-      this.items = this.items.filter(i => i.id !== id);
+      this.items = this.items.filter((i) => i.id !== id);
     }
   }
 }

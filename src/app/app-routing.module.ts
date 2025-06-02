@@ -9,6 +9,10 @@ import { InventoryListComponent } from './inventory/inventory-list/inventory-lis
 import { AddOrderComponent } from './orders/add-order/add-order.component';
 import { EditOrderComponent } from './orders/edit-order/edit-order.component';
 import { OrderListComponent } from './orders/order-list/order-list.component';
+import { ForecastComponent } from './forecast/forecast.component';
+import { ReorderComponent } from './reorder/reorder.component';
+import { NextWeekInventoryComponent } from './next-week-inventory/next-week-inventory.component';
+import { DemandForecastComponent } from './demand-forecast/demand-forecast.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,11 +24,15 @@ const routes: Routes = [
   { path: 'inventory/edit/:id', component: EditInventoryComponent },
   { path: 'orders', component: OrderListComponent },
   { path: 'orders/add', component: AddOrderComponent },
-  { path: 'orders/edit/:id', component: EditOrderComponent }
+  { path: 'orders/edit/:id', component: EditOrderComponent },
+  { path: 'forecast', component: ForecastComponent },
+  { path:'reorder', component:ReorderComponent},
+  { path:'nextweek-requirement', component:NextWeekInventoryComponent},
+  { path:'demand-forecast', component:DemandForecastComponent}
 
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

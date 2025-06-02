@@ -6,14 +6,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 10px; 
+  padding-top: 10px;
   position: fixed;
   padding-left: 30px;
 
   a {
-  color: inherit;        // Inherits text color from parent
-  text-decoration: none; // Removes underline
-}
+    color: inherit; // Inherits text color from parent
+    text-decoration: none; // Removes underline
+  }
 
   ul {
     list-style: none;
@@ -28,14 +28,14 @@
       margin-top: 10px;
 
       &.active-link {
-      background-color: #36018b; // Bootstrap primary blue or customize
-      color: white;
-      border-radius: 5px;
-      font-weight: 600;
-    }
+        background-color: #36018b; // Bootstrap primary blue or customize
+        color: white;
+        border-radius: 5px;
+        font-weight: 600;
+      }
 
       &:hover {
-        background-color:#36018b;
+        background-color: #36018b;
         border-radius: 5px;
         color: white;
       }

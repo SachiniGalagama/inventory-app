@@ -1,18 +1,30 @@
 <!-- 🔔 Low Stock Alert Section -->
- <div class="stock-notification border-red-500 rounded shadow">
-    <div class=" close d-flex">
-        <button (click)="closeModal()" class="text-red-500 hover:text-red-700 text-xl  font-bold leading-none">&times;</button>
-    </div>
-    <div *ngIf="lowStockItems.length > 0" class="bg-red-100 border-l-4  text-red-700 p-4  mb-4">
-  <p class="font-semibold">⚠️ Low Stock Alert</p>
-  <p>{{ lowStockCount }} item(s) need restocking:</p>
-  <ul class="list-disc list-inside mt-2">
-    <li *ngFor="let item of lowStockItems">
-      {{ item.name }} (Stock: {{ item.stock }}, Reorder Level: {{ item.reorderLevel }})
-    </li>
-  </ul>
+<div class="stock-notification border-red-500 rounded shadow">
+  <div class="close d-flex">
+    <button
+      (click)="closeModal()"
+      class="text-red-500 hover:text-red-700 text-xl font-bold leading-none"
+    >
+      &times;
+    </button>
+  </div>
+  <div
+    *ngIf="lowStockItems.length > 0"
+    class="bg-red-100 border-l-4 text-red-700 p-4 mb-4"
+  >
+    <p class="font-semibold">⚠️ Low Stock Alert</p>
+    <p>{{ lowStockCount }} item(s) need restocking:</p>
+    <ul class="list-disc list-inside mt-2">
+      <li *ngFor="let item of lowStockItems">
+        {{ item.name }} (Stock: {{ item.stock }}, Reorder Level:
+        {{ item.reorderLevel }})
+      </li>
+    </ul>
+  </div>
+  <div
+    *ngIf="lowStockItems.length === 0"
+    class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow mb-4"
+  >
+    ✅ All inventory levels are healthy.
+  </div>
 </div>
-<div *ngIf="lowStockItems.length === 0" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow mb-4">
-  ✅ All inventory levels are healthy.
-</div>
- </div>
