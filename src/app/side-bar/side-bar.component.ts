@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.scss',
 })
-export class SideBarComponent {}
+export class SideBarComponent {
+  showInsights: boolean = false;
+
+  toggleInsights() {
+    this.showInsights = !this.showInsights;
+  }
+}

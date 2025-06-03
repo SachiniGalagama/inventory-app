@@ -3,11 +3,11 @@
 <form
   (ngSubmit)="addOrder()"
   #orderForm="ngForm"
-  class="space-y-4 col-6 rounded shadow"
+  class="order-form space-y-4 col-6 rounded shadow "
 >
   <div
     *ngFor="let item of items; let i = index"
-    class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200"
+    class=""
   >
     <!-- Product Name -->
     <tr class="col-span-2 relative">
@@ -104,13 +104,33 @@
           type="button"
           (click)="removeItemRow(i)"
           *ngIf="items.length > 1"
-          class="text-red-600 text-sm hover:underline text-white px-6 py-2 rounded"
+          class="text-red-600 text-sm hover:underline text-white px-6 mb-2 mt-2 rounded"
         >
           Remove
         </button>
       </td>
     </tr>
   </div>
+
+  <!-- Order Status Dropdown -->
+<div>
+  <td><label class="block text-sm font-medium mb-1">Order Status</label></td>
+  <td><select
+    [(ngModel)]="orderStatus"
+    name="orderStatus"
+    required
+    class="w-full border rounded px-2 py-1"
+    #orderStatusModel="ngModel"
+  >
+    <option [value]="'pending'">pending</option>
+    <option [value]="'shipped'">shipped</option>
+    <option [value]="'completed'">completed</option>
+  </select></td>
+  <p class="text-red-500 text-xs" *ngIf="orderStatusModel.invalid && orderStatusModel.touched">
+    Status is required.
+  </p>
+</div>
+
 
   <!-- Add Item Button -->
 

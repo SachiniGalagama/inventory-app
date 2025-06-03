@@ -5,7 +5,7 @@ import { InventoryService } from '../services/inventory.service';
   selector: 'app-next-week-inventory',
   standalone: false,
   templateUrl: './next-week-inventory.component.html',
-  styleUrl: './next-week-inventory.component.scss'
+  styleUrl: './next-week-inventory.component.scss',
 })
 export class NextWeekInventoryComponent implements OnInit {
   nextWeekForecast: any[] = [];
@@ -13,6 +13,7 @@ export class NextWeekInventoryComponent implements OnInit {
   constructor(private inventoryService: InventoryService) {}
 
   async ngOnInit() {
-    this.nextWeekForecast = await this.inventoryService.forecastNextWeekRequirements();
+    this.nextWeekForecast =
+      await this.inventoryService.forecastNextWeekRequirements();
   }
 }

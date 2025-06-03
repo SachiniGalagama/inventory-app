@@ -5,21 +5,18 @@ import { InventoryService } from '../services/inventory.service';
   selector: 'app-demand-forecast',
   standalone: false,
   templateUrl: './demand-forecast.component.html',
-  styleUrl: './demand-forecast.component.scss'
+  styleUrl: './demand-forecast.component.scss',
 })
 export class DemandForecastComponent {
-
-demandData: any[] = [];
+  demandData: any[] = [];
 
   constructor(private inventoryService: InventoryService) {}
 
+  async loadDemandData() {
+    this.demandData = await this.inventoryService.getDemandLevels();
+  }
 
-async loadDemandData() {
-this.demandData = await this.inventoryService.getDemandLevels();
-}
-
-ngOnInit() {
-this.loadDemandData();
-}
-
+  ngOnInit() {
+    this.loadDemandData();
+  }
 }

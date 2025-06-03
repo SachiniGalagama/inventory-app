@@ -23,13 +23,12 @@ const routes: Routes = [
   { path: 'inventory/add', component: AddInventoryComponent },
   { path: 'inventory/edit/:id', component: EditInventoryComponent },
   { path: 'orders', component: OrderListComponent },
-  { path: 'orders/add', component: AddOrderComponent },
+  { path: 'add-order', component: AddOrderComponent },
   { path: 'orders/edit/:id', component: EditOrderComponent },
   { path: 'forecast', component: ForecastComponent },
-  { path:'reorder', component:ReorderComponent},
-  { path:'nextweek-requirement', component:NextWeekInventoryComponent},
-  { path:'demand-forecast', component:DemandForecastComponent}
-
+  { path: 'reorder', component: ReorderComponent },
+  { path: 'nextweek-requirement', component: NextWeekInventoryComponent },
+  { path: 'demand-forecast', component: DemandForecastComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

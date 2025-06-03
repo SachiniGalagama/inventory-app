@@ -252,89 +252,114 @@ export class InventoryService {
     return suggestions.filter((item) => item.needsReorder);
   }
 
-  //next week stock requirement 
-  async forecastNextWeekRequirements(): Promise<{ name: string; productId: string; nextWeekQty: number; category?: string }[]> {
-  const userId = await this.getUserId();
-  const ordersSnap = await getDocs(query(collection(this.firestore, 'orders'), where('userId', '==', userId)));
+  //next week stock requirement
+  async forecastNextWeekRequirements(): Promise<
+    {
+      name: string;
+      productId: string;
+      nextWeekQty: number;
+      category?: string;
+    }[]
+  > {
+    const userId = await this.getUserId();
+    const ordersSnap = await getDocs(
+      query(
+        collection(this.firestore, 'orders'),
+        where('userId', '==', userId),
+      ),
+    );
 
-  const consumptionMap: Record<string, { name: string; category?: string; totalQty: number; days: Set<string> }> = {};
+    const consumptionMap: Record<
+      string,
+      { name: string; category?: string; totalQty: number; days: Set<string> }
+    > = {};
 
-  for (const docSnap of ordersSnap.docs) {
-    const order = docSnap.data();
-    const dateStr = order['orderDate']?.toDate().toISOString().split('T')[0];
+    for (const docSnap of ordersSnap.docs) {
+      const order = docSnap.data();
+      const dateStr = order['orderDate']?.toDate().toISOString().split('T')[0];
 
-    if (!order['items'] || !order['orderDate']) continue;
+      if (!order['items'] || !order['orderDate']) continue;
 
-    for (const item of order['items']) {
-      const id = item.productId;
-      if (!consumptionMap[id]) {
-        consumptionMap[id] = {
-          name: item.productName,
-          category: item.category,
-          totalQty: 0,
-          days: new Set()
-        };
+      for (const item of order['items']) {
+        const id = item.productId;
+        if (!consumptionMap[id]) {
+          consumptionMap[id] = {
+            name: item.productName,
+            category: item.category,
+            totalQty: 0,
+            days: new Set(),
+          };
+        }
+        consumptionMap[id].totalQty += item.quantity;
+        consumptionMap[id].days.add(dateStr);
       }
-      consumptionMap[id].totalQty += item.quantity;
-      consumptionMap[id].days.add(dateStr);
     }
+
+    const result = Object.entries(consumptionMap).map(([id, c]) => {
+      const avgDaily = c.totalQty / c.days.size;
+      return {
+        productId: id,
+        name: c.name,
+        category: c.category,
+        nextWeekQty: Math.ceil(avgDaily * 7),
+      };
+    });
+
+    return result;
   }
 
-  const result = Object.entries(consumptionMap).map(([id, c]) => {
-    const avgDaily = c.totalQty / c.days.size;
-    return {
-      productId: id,
-      name: c.name,
-      category: c.category,
-      nextWeekQty: Math.ceil(avgDaily * 7)
-    };
-  });
+  //high-low demand
+  async getDemandLevels(): Promise<any[]> {
+    const userId = await this.getUserId();
 
-  return result;
-}
+    const ordersSnap = await getDocs(
+      query(
+        collection(this.firestore, 'orders'),
+        where('userId', '==', userId),
+      ),
+    );
+    const orderItems: Record<string, number> = {};
 
-//high-low demand 
-async getDemandLevels(): Promise<any[]> {
-const userId = await this.getUserId();
+    for (const docSnap of ordersSnap.docs) {
+      const order = docSnap.data();
+      if (!order['items']) continue;
 
-const ordersSnap = await getDocs(query(collection(this.firestore, 'orders'), where('userId', '==', userId)));
-const orderItems: Record<string, number> = {};
+      for (const item of order['items']) {
+        if (!item.productId) continue;
+        orderItems[item.productId] =
+          (orderItems[item.productId] || 0) + item.quantity;
+      }
+    }
 
-for (const docSnap of ordersSnap.docs) {
-const order = docSnap.data();
-if (!order['items']) continue;
+    const itemsSnap = await getDocs(
+      query(
+        collection(this.firestore, 'inventory'),
+        where('userId', '==', userId),
+      ),
+    );
+    const items = itemsSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-for (const item of order['items']) {
-  if (!item.productId) continue;
-  orderItems[item.productId] = (orderItems[item.productId] || 0) + item.quantity;
-}
-}
+    const allQuantities = Object.values(orderItems);
+    const max = Math.max(...allQuantities, 0);
+    const min = Math.min(...allQuantities, 0);
+    const range = max - min;
+    const highThreshold = min + range * 0.66;
+    const mediumThreshold = min + range * 0.33;
 
-const itemsSnap = await getDocs(query(collection(this.firestore, 'inventory'), where('userId', '==', userId)));
-const items = itemsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const demandData = items.map((item) => {
+      const soldQty = orderItems[item.id] || 0;
+      let demand: 'High' | 'Medium' | 'Low' = 'Low';
 
-const allQuantities = Object.values(orderItems);
-const max = Math.max(...allQuantities, 0);
-const min = Math.min(...allQuantities, 0);
-const range = max - min;
-const highThreshold = min + range * 0.66;
-const mediumThreshold = min + range * 0.33;
+      if (soldQty >= highThreshold) demand = 'High';
+      else if (soldQty >= mediumThreshold) demand = 'Medium';
 
-const demandData = items.map(item => {
-const soldQty = orderItems[item.id] || 0;
-let demand: 'High' | 'Medium' | 'Low' = 'Low';
+      return {
+        ...item,
+        soldQty,
+        demand,
+      };
+    });
 
-if (soldQty >= highThreshold) demand = 'High';
-else if (soldQty >= mediumThreshold) demand = 'Medium';
-
-return {
-  ...item,
-  soldQty,
-  demand
-};
-});
-
-return demandData.sort((a, b) => b.soldQty - a.soldQty);
-}
-
+    return demandData.sort((a, b) => b.soldQty - a.soldQty);
+  }
 }

@@ -8,9 +8,8 @@ describe('DemandForecastComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DemandForecastComponent]
-    })
-    .compileComponents();
+      declarations: [DemandForecastComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DemandForecastComponent);
     component = fixture.componentInstance;

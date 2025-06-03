@@ -16,21 +16,6 @@
   </div>
 </div>
 
-<!-- INVENTORY BAR CHART -->
-<!-- <div class="bg-white p-4 rounded shadow mb-6">
-  <h3 class="text-lg font-semibold mb-2">Inventory Stock Levels</h3>
-  <ngx-charts-bar-vertical
-    [results]="inventoryChartData"
-    [xAxis]="true"
-    [yAxis]="true"
-    [legend]="false"
-    [showXAxisLabel]="true"
-    [showYAxisLabel]="true"
-    xAxisLabel="Item"
-    yAxisLabel="Stock"
-    [scheme]="'cool'">
-  </ngx-charts-bar-vertical>
-</div> -->
 
 <div class="chart-section d-flex">
   <div class="charts-bar">
@@ -67,19 +52,6 @@
     </div>
   </div>
 </div>
-<!-- 🔔 Low Stock Alert Section
-<div *ngIf="lowStockItems.length > 0" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow mb-4">
-  <p class="font-semibold">⚠️ Low Stock Alert</p>
-  <p>{{ lowStockCount }} item(s) need restocking:</p>
-  <ul class="list-disc list-inside mt-2">
-    <li *ngFor="let item of lowStockItems">
-      {{ item.name }} (Stock: {{ item.stock }}, Reorder Level: {{ item.reorderLevel }})
-    </li>
-  </ul>
-</div>
-<div *ngIf="lowStockItems.length === 0" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow mb-4">
-  ✅ All inventory levels are healthy.
-</div> -->
 
 <app-low-stock-modal
   *ngIf="showLowStockModal"
@@ -89,76 +61,6 @@
   class="fixed bottom-4 right-4 z-50"
 >
 </app-low-stock-modal>
-
-<div class="mt-4">
-  <h3>Daily Inventory Usage</h3>
-  <ngx-charts-bar-vertical
-    [view]="[600, 300]"
-    [scheme]="colorScheme"
-    [results]="dailyUsageChartData"
-    [xAxis]="true"
-    [yAxis]="true"
-    [legend]="false"
-    [showDataLabel]="true"
-    [animations]="true"
-  >
-  </ngx-charts-bar-vertical>
-</div>
-
-<table class="w-full text-left border border-gray-300 rounded">
-  <thead class="bg-gray-200">
-    <tr>
-      <th class="p-2">Item</th>
-      <th class="p-2">Stock</th>
-      <th class="p-2">Avg Daily Usage</th>
-      <th class="p-2">Days Left</th>
-      <th class="p-2">Reorder Qty</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of aiInventoryInsights" class="hover:bg-gray-50">
-      <td class="p-2">{{ item.name }}</td>
-      <td class="p-2">{{ item.stock }}</td>
-      <td class="p-2">{{ item.avgDailyUsage }}</td>
-      <td class="p-2">{{ item.predictedDaysLeft }}</td>
-      <td class="p-2 font-semibold text-red-600">{{ item.reorderQuantity }}</td>
-    </tr>
-  </tbody>
-</table>
-<div *ngIf="forecast.length > 0" class="forecast-section">
-  <h3>Forecast for the next 7 days</h3>
-  <ul>
-    <li *ngFor="let price of forecast; let i = index">
-      Day {{ i + 1 }}: Rs. {{ price | number: "1.2-2" }}
-    </li>
-  </ul>
-</div>
-
-<!-- 
-<table >
-  <tr>
-    <th>Item</th>
-    <th>Stock Level</th>
-    <th>Average Consumption Daily</th>
-    <th>Days until Stockout</th>
-  </tr>
-  <tr *ngFor="let item of inventory">
-    <td>{{ item.name }}</td>
-    <td>{{ item.stock }}</td>
-    <td>{{ item.avgDailyConsumption?.toFixed(1) }}</td>
-    <td>
-    <span [ngClass]="{
-      'text-red-600 font-bold': item.daysUntilStockout < 20,
-      'text-yellow-600': item.daysUntilStockout >= 7 && item.daysUntilStockout <= 14,
-      'text-green-600': item.daysUntilStockout > 14
-    }">
-      {{ item.daysUntilStockout || 'N/A' }} days
-    </span>
-  </td>
-  </tr>
-  
-  
-</table> -->
 
 <h2>📉 Stockout Risk</h2>
 

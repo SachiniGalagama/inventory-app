@@ -6,6 +6,8 @@ import { InventoryItem } from '../../models/inventory.models';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { Injector } from '@angular/core';
+
 
 @Component({
   selector: 'app-add-order',
@@ -26,18 +28,23 @@ export class AddOrderComponent implements OnInit {
   inventoryItems: InventoryItem[] = [];
   suggestions: string[][] = [];
   totalPrice = 0;
+  orderStatus: string = 'pending';
 
   constructor(
-    private orderService: OrderService,
-    private inventoryService: InventoryService,
-    private router: Router,
-    private authService: AuthService,
-  ) {}
+  private orderService: OrderService,
+  private inventoryService: InventoryService,
+  private router: Router,
+  private injector: Injector // replace AuthService with Injector
+) {}
 
+
+  
   ngOnInit() {
-    this.loadInventory();
-    this.initializeSuggestions();
-  }
+  console.log('AddOrderComponent loaded');
+  this.loadInventory();
+  this.initializeSuggestions();
+}
+
 
   async loadInventory() {
     this.inventoryItems = await this.inventoryService.getItems();
@@ -118,12 +125,13 @@ export class AddOrderComponent implements OnInit {
   }
 
   async addOrder() {
-    const user = await this.authService.getCurrentUser();
+    const authService = this.injector.get(AuthService);
+const user = await authService.getCurrentUser();
     const order: Order = {
       userId: user?.uid || '',
       items: this.items,
       totalPrice: this.totalPrice,
-      status: 'Pending',
+      status: this.orderStatus.trim().toLowerCase(),
       createdAt: Timestamp.now(),
       orderDate: Timestamp.now(),
     };
