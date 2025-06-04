@@ -33,6 +33,10 @@ import { ReorderComponent } from './reorder/reorder.component';
 import { NextWeekInventoryComponent } from './next-week-inventory/next-week-inventory.component';
 import { DemandForecastComponent } from './demand-forecast/demand-forecast.component';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,10 +68,10 @@ import { DemandForecastComponent } from './demand-forecast/demand-forecast.compo
     NgChartsModule,
   ],
   providers: [
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-  ],
+  provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+  provideAuth(() => getAuth()),
+  provideFirestore(() => getFirestore()),
+],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

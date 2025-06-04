@@ -14,6 +14,7 @@
           pattern="^[a-z ]+$"
           #nameInput="ngModel"
           placeholder="lowercase only"
+          autocomplete="off"
         />
         <div
           *ngIf="nameInput.invalid && nameInput.touched"
@@ -21,16 +22,44 @@
         >
           Name must contain only lowercase letters.
         </div>
+
+        <!-- Name suggestions -->
+        <ul *ngIf="nameSuggestions.length" class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto">
+          <li
+            *ngFor="let suggestion of nameSuggestions"
+            (click)="selectNameSuggestion(suggestion)"
+            class="p-1 cursor-pointer hover:bg-blue-200"
+          >
+            {{ suggestion }}
+          </li>
+        </ul>
       </td>
     </tr>
 
     <tr>
       <td><label>Category:</label></td>
       <td>
-        <input [(ngModel)]="item.category" name="category" required />
+        <input
+          [(ngModel)]="item.category"
+          (ngModelChange)="onCategoryChange()"
+          name="category"
+          required
+          autocomplete="off"
+        />
+        <!-- Category suggestions -->
+        <ul *ngIf="categorySuggestions.length" class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto">
+          <li
+            *ngFor="let suggestion of categorySuggestions"
+            (click)="selectCategorySuggestion(suggestion)"
+            class="p-1 cursor-pointer hover:bg-blue-200"
+          >
+            {{ suggestion }}
+          </li>
+        </ul>
       </td>
     </tr>
 
+    <!-- Rest of the form unchanged -->
     <tr>
       <td><label>Stock:</label></td>
       <td>

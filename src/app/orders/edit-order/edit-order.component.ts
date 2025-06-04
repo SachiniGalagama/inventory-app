@@ -17,6 +17,7 @@ export class EditOrderComponent implements OnInit {
   totalPrice = 0;
   inventoryItems: InventoryItem[] = [];
   status: string = '';
+  userId: string = ''; // keep userId if needed
 
   constructor(
     private route: ActivatedRoute,
@@ -27,16 +28,22 @@ export class EditOrderComponent implements OnInit {
 
   async ngOnInit() {
     this.orderId = this.route.snapshot.paramMap.get('id')!;
+    this.inventoryItems = await this.inventoryService.getItems();
+
     const order = await this.orderService.getOrderById(this.orderId);
     if (order) {
-      this.items = order.items.map((item) => ({
-        ...item,
-        totalPrice: item.quantity * item.unitPrice,
-      }));
-      this.totalPrice = order.totalPrice;
+      this.userId = order.userId || '';
+      this.items = order.items.map((item) => {
+        const inv = this.inventoryItems.find(i => i.id === item.productId);
+        return {
+          ...item,
+          unitPrice: inv?.unitPrice || item.unitPrice,
+          totalPrice: item.quantity * (inv?.unitPrice || item.unitPrice),
+        };
+      });
+      this.totalPrice = this.items.reduce((sum, item) => sum + item.totalPrice, 0);
       this.status = order.status;
     }
-    this.inventoryItems = await this.inventoryService.getItems();
   }
 
   addItemRow() {
@@ -51,7 +58,11 @@ export class EditOrderComponent implements OnInit {
 
   removeItemRow(index: number) {
     this.items.splice(index, 1);
-    this.calculateTotal();
+    if (this.items.length === 0) {
+      this.totalPrice = 0;
+    } else {
+      this.calculateTotal();
+    }
   }
 
   onProductChange(index: number) {
@@ -81,14 +92,34 @@ export class EditOrderComponent implements OnInit {
     );
   }
 
-  async updateOrder() {
-    const updatedOrder: Partial<Order> = {
-      items: this.items,
-      totalPrice: this.totalPrice,
-      status: this.status,
-    };
+  validateOrder(): boolean {
+    if (this.items.length === 0) {
+      alert('Order must contain at least one item.');
+      return false;
+    }
+    for (const item of this.items) {
+      if (!item.productId || item.quantity <= 0) {
+        alert('Please select a valid product and quantity for all items.');
+        return false;
+      }
+    }
+    return true;
+  }
 
-    await this.orderService.updateOrder(this.orderId, updatedOrder);
-    this.router.navigate(['/orders']);
+  async updateOrder() {
+    if (!this.validateOrder()) return;
+
+    try {
+      const updatedOrder: Partial<Order> = {
+        items: this.items,
+        totalPrice: this.totalPrice,
+        status: this.status,
+        userId: this.userId, // keep userId for Firestore rules
+      };
+      await this.orderService.updateOrder(this.orderId, updatedOrder);
+      this.router.navigate(['/orders']);
+    } catch (error) {
+      alert('Failed to update the order: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
   }
 }

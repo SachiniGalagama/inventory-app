@@ -17,6 +17,8 @@ export class RegisterComponent {
     private router: Router,
   ) {}
 
+  
+
   onRegister() {
     this.authService
       .register(this.email, this.password)
