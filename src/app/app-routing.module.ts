@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'orders', component: OrderListComponent },
   { path: 'add-order', component: AddOrderComponent },
   { path: 'orders/edit/:id', component: EditOrderComponent },
-  { path: 'forecast', component: ForecastComponent },
+  { path: 'stock-out', component: ForecastComponent },
   { path: 'reorder', component: ReorderComponent },
   { path: 'nextweek-requirement', component: NextWeekInventoryComponent },
   { path: 'demand-forecast', component: DemandForecastComponent },

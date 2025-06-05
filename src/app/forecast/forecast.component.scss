@@ -1,0 +1,88 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #333;
+}
+
+.filters select {
+  margin-top: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.filters select:focus {
+  border-color: #42a5f5;
+  outline: none;
+}
+
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.forecast-table th,
+.forecast-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.forecast-table thead {
+  background-color: #42a5f5;
+  color: white;
+  font-weight: 700;
+}
+
+.forecast-table tbody tr:hover {
+  background-color: #f1f9ff;
+  cursor: pointer;
+}
+
+.forecast-table tbody tr.low {
+  background-color: #e0ffe2; /* light orange */
+  color: #000000;
+  font-weight: 600;
+}
+
+.forecast-table tbody tr.medium {
+  background-color: #fffde7; /* light yellow */
+  color: #000000;
+  font-weight: 600;
+}
+
+.forecast-table tbody tr.high {
+  background-color: #ffebee; /* light red */
+  color: #000000;
+  font-weight: 700;
+}
+
+.risk-level {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+  .forecast-table th,
+  .forecast-table td {
+    padding: 0.5rem 0.7rem;
+  }
+}

@@ -1,5 +1,5 @@
 <h2>Demand Levels</h2>
-<table>
+<table class="demand-table">
   <thead>
     <tr>
       <th>Item</th>
@@ -14,7 +14,9 @@
       <td>{{ item.category }}</td>
       <td>{{ item.soldQty }}</td>
       <td>
-        <span [ngClass]="item.demand.toLowerCase()">{{ item.demand }}</span>
+        <span class="demand-label" [ngClass]="item.demand.toLowerCase()">
+          {{ item.demand }}
+        </span>
       </td>
     </tr>
   </tbody>
