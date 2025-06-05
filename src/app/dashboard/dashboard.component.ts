@@ -5,6 +5,7 @@ import { UsageService } from '../services/usage.service';
 import { InventoryItem } from '../models/inventory.models';
 import { InventoryService } from '../services/inventory.service';
 import { ChartData } from 'chart.js';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -56,14 +57,24 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(
-    private dashboardService: DashboardService,
-    private aiService: DashboardAiService,
-    private usageService: UsageService,
-    private inventoryService: InventoryService,
+     private dashboardService: DashboardService,
+  private inventoryService: InventoryService,
+  private authService: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.dashboardService.getInventory().subscribe((data) => {
+    this.authService.currentUser$.subscribe((user) => {
+    if (user) {
+      console.log('✅ Logged in:', user.uid);
+      this.loadDashboardData();
+    } else {
+      console.log('❌ Not logged in yet');
+    }
+  });
+}
+
+  loadDashboardData(){
+    this.inventoryService.getInventoryItems$().subscribe((data) => {
       this.inventory = data;
       this.lowStockItems = data.filter(
         (item) => item.stock <= item.reorderLevel,
@@ -76,28 +87,7 @@ export class DashboardComponent implements OnInit {
         name: item.name,
         value: item.stock,
       }));
-      this.aiService.getAiInsights().subscribe((data) => {
-        this.aiInventoryInsights = data.filter(
-          (item) => +item.predictedDaysLeft <= 7,
-        );
-      });
-      const today = new Date().toISOString().split('T')[0];
-      this.usageService.getDailyUsage(today).subscribe((data) => {
-        // You can use this to populate a chart or display stats
-        const usageMap: any = {};
-        data.forEach((log) => {
-          usageMap[log.itemId] = (usageMap[log.itemId] || 0) + log.quantity;
-        });
-
-        // Optionally map item names for the chart
-        this.dailyUsageChartData = Object.keys(usageMap).map((id) => {
-          const item = this.inventory.find((inv) => inv.id === id);
-          return {
-            name: item?.name || id,
-            value: usageMap[id],
-          };
-        });
-      });
+      
       this.dashboardService.getForecast().subscribe((data) => {
         if (data?.predictions) {
           this.forecast = data.predictions;
@@ -107,6 +97,7 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getOrders().subscribe((data) => {
       this.orders = data;
+      console.log('Orders data on dashboard:', data);
       this.pendingOrders = data.filter(
         (order) => order.status === 'pending',
       ).length;

@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  onAuthStateChanged,
+  User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
 } from '@angular/fire/auth';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: Auth, private firestore: Firestore) {}
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
-  async register(email: string, password: string): Promise<UserCredential> {
-    const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-    const uid = userCredential.user.uid;
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-    await setDoc(userDocRef, {
-      email,
-      createdAt: new Date(),
+  constructor(private auth: Auth) {
+    onAuthStateChanged(this.auth, (user) => {
+      this.currentUserSubject.next(user);
     });
-    return userCredential;
+  }
+
+  register(email: string, password: string): Promise<UserCredential> {
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   login(email: string, password: string): Promise<UserCredential> {
@@ -33,7 +33,7 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  getCurrentUser() {
-    return this.auth.currentUser;
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 }

@@ -32,6 +32,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { ReorderComponent } from './reorder/reorder.component';
 import { NextWeekInventoryComponent } from './next-week-inventory/next-week-inventory.component';
 import { DemandForecastComponent } from './demand-forecast/demand-forecast.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -66,6 +67,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     ReactiveFormsModule,
     CommonModule,
     NgChartsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
   provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

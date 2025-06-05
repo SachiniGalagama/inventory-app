@@ -11,9 +11,11 @@ import {
   where,
   Timestamp,
   getDoc,
+  collectionData,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { InventoryItem } from '../models/inventory.models';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
@@ -57,6 +59,14 @@ export class InventoryService {
       });
     }
   }
+
+getInventoryItems$(): Observable<InventoryItem[]> {
+  const userId = this.auth.currentUser?.uid;
+  if (!userId) throw new Error('User not logged in');
+  const itemsRef = collection(this.firestore, 'inventory');
+  const q = query(itemsRef, where('userId', '==', userId));
+  return collectionData(q, { idField: 'id' }) as Observable<InventoryItem[]>;
+}
 
   async getItems(userId?: string): Promise<InventoryItem[]> {
     userId = userId || (await this.getUserId());
