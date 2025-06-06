@@ -24,7 +24,10 @@
         </div>
 
         <!-- Name suggestions -->
-        <ul *ngIf="nameSuggestions.length" class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto">
+        <ul
+          *ngIf="nameSuggestions.length"
+          class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto"
+        >
           <li
             *ngFor="let suggestion of nameSuggestions"
             (click)="selectNameSuggestion(suggestion)"
@@ -47,7 +50,10 @@
           autocomplete="off"
         />
         <!-- Category suggestions -->
-        <ul *ngIf="categorySuggestions.length" class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto">
+        <ul
+          *ngIf="categorySuggestions.length"
+          class="suggestions-list border bg-white rounded shadow mt-1 max-h-40 overflow-auto"
+        >
           <li
             *ngFor="let suggestion of categorySuggestions"
             (click)="selectCategorySuggestion(suggestion)"

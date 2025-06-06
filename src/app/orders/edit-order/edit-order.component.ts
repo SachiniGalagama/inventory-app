@@ -34,14 +34,17 @@ export class EditOrderComponent implements OnInit {
     if (order) {
       this.userId = order.userId || '';
       this.items = order.items.map((item) => {
-        const inv = this.inventoryItems.find(i => i.id === item.productId);
+        const inv = this.inventoryItems.find((i) => i.id === item.productId);
         return {
           ...item,
           unitPrice: inv?.unitPrice || item.unitPrice,
           totalPrice: item.quantity * (inv?.unitPrice || item.unitPrice),
         };
       });
-      this.totalPrice = this.items.reduce((sum, item) => sum + item.totalPrice, 0);
+      this.totalPrice = this.items.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0,
+      );
       this.status = order.status;
     }
   }
@@ -119,7 +122,10 @@ export class EditOrderComponent implements OnInit {
       await this.orderService.updateOrder(this.orderId, updatedOrder);
       this.router.navigate(['/orders']);
     } catch (error) {
-      alert('Failed to update the order: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update the order: ' +
+          (error instanceof Error ? error.message : 'Unknown error'),
+      );
     }
   }
 }

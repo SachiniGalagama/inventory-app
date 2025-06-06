@@ -8,7 +8,6 @@ import { AuthService } from '../../auth.service';
 import { Timestamp } from '@angular/fire/firestore';
 import { Injector } from '@angular/core';
 
-
 @Component({
   selector: 'app-add-order',
   standalone: false,
@@ -31,21 +30,17 @@ export class AddOrderComponent implements OnInit {
   orderStatus: string = 'pending';
 
   constructor(
-  private orderService: OrderService,
-  private inventoryService: InventoryService,
-  private router: Router,
-  private injector: Injector // replace AuthService with Injector
-) {}
+    private orderService: OrderService,
+    private inventoryService: InventoryService,
+    private router: Router,
+    private injector: Injector, // replace AuthService with Injector
+  ) {}
 
-
-  
   ngOnInit() {
-  console.log('AddOrderComponent loaded');
-  this.loadInventory();
-  this.initializeSuggestions();
-}
-
-
+    console.log('AddOrderComponent loaded');
+    this.loadInventory();
+    this.initializeSuggestions();
+  }
 
   async loadInventory() {
     this.inventoryItems = await this.inventoryService.getItems();
@@ -64,7 +59,7 @@ export class AddOrderComponent implements OnInit {
       totalPrice: 0,
     });
     this.suggestions.push([]);
-    this.calculateTotal(); 
+    this.calculateTotal();
   }
 
   removeItemRow(index: number) {
@@ -111,8 +106,6 @@ export class AddOrderComponent implements OnInit {
       return;
     }
 
-  
-
     const matches = this.inventoryItems
       .map((item) => item.name)
       .filter(
@@ -124,61 +117,64 @@ export class AddOrderComponent implements OnInit {
   }
 
   selectSuggestion(i: number, suggestion: string) {
-  const matchedItem = this.inventoryItems.find(item => item.name.toLowerCase() === suggestion.toLowerCase());
+    const matchedItem = this.inventoryItems.find(
+      (item) => item.name.toLowerCase() === suggestion.toLowerCase(),
+    );
 
-  if (matchedItem) {
-    this.items[i].productName = matchedItem.name;
-    this.items[i].productId = matchedItem.id; // ✅ Set the productId
-    this.items[i].unitPrice = matchedItem.unitPrice || 0;
-    this.items[i].totalPrice = this.items[i].unitPrice * this.items[i].quantity;
-    this.calculateTotal();
+    if (matchedItem) {
+      this.items[i].productName = matchedItem.name;
+      this.items[i].productId = matchedItem.id; // ✅ Set the productId
+      this.items[i].unitPrice = matchedItem.unitPrice || 0;
+      this.items[i].totalPrice =
+        this.items[i].unitPrice * this.items[i].quantity;
+      this.calculateTotal();
+    }
+
+    this.suggestions[i] = [];
   }
-
-  this.suggestions[i] = [];
-}
-
 
   async addOrder() {
-  const authService = this.injector.get(AuthService);
-  const user = await authService.getCurrentUser();
+    const authService = this.injector.get(AuthService);
+    const user = await authService.getCurrentUser();
 
-  // Clean items and recalc totalPrice per item here
-  const cleanedItems = this.items
-    .filter(item => item.productId && item.productName)
-    .map(item => {
-      const quantity = Number(item.quantity ?? 0);
-      const unitPrice = Number(item.unitPrice ?? 0);
-      return {
-        productId: item.productId,
-        productName: item.productName,
-        quantity,
-        unitPrice,
-        totalPrice: quantity * unitPrice,
-      };
-    });
+    // Clean items and recalc totalPrice per item here
+    const cleanedItems = this.items
+      .filter((item) => item.productId && item.productName)
+      .map((item) => {
+        const quantity = Number(item.quantity ?? 0);
+        const unitPrice = Number(item.unitPrice ?? 0);
+        return {
+          productId: item.productId,
+          productName: item.productName,
+          quantity,
+          unitPrice,
+          totalPrice: quantity * unitPrice,
+        };
+      });
 
-  const totalPrice = cleanedItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    const totalPrice = cleanedItems.reduce(
+      (sum, item) => sum + item.totalPrice,
+      0,
+    );
 
-  const order: Order = {
-    userId: user?.uid || '',
-    items: cleanedItems,
-    totalPrice,
-    status: this.orderStatus.trim().toLowerCase(),
-    createdAt: Timestamp.now(),
-    orderDate: Timestamp.now(),
-  };
+    const order: Order = {
+      userId: user?.uid || '',
+      items: cleanedItems,
+      totalPrice,
+      status: this.orderStatus.trim().toLowerCase(),
+      createdAt: Timestamp.now(),
+      orderDate: Timestamp.now(),
+    };
 
-  try {
-    await this.orderService.addOrder(order);
-    this.router.navigate(['/orders']);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      alert(error.message);
-    } else {
-      alert('An unexpected error occurred.');
+    try {
+      await this.orderService.addOrder(order);
+      this.router.navigate(['/orders']);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unexpected error occurred.');
+      }
     }
   }
-}
-
-
 }

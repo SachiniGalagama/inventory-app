@@ -1,5 +1,3 @@
-<!-- STAT CARDS -->
-
 <h5>📋 Current System Status</h5>
 <div class="stat-cards d-flex gap-4 mb-6">
   <div class="stat-card bg-white p-4 rounded shadow">
@@ -15,8 +13,6 @@
     ⏳ Pending Orders: {{ pendingOrders }}
   </div>
 </div>
-
-
 <div class="chart-section d-flex">
   <div class="charts-bar">
     <h5 class="text-xl font-semibold mt-6 mb-2">📦 Inventory Stock Levels</h5>
@@ -62,7 +58,7 @@
 >
 </app-low-stock-modal>
 
-<h2>📉 Stockout Risk</h2>
+<h4>📉 Stockout Risk</h4>
 
 <select [(ngModel)]="sortKey" (change)="sortChart()">
   <option value="estimatedDaysLeft">Risk (Lowest First)</option>

@@ -70,10 +70,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     BrowserAnimationsModule,
   ],
   providers: [
-  provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-  provideAuth(() => getAuth()),
-  provideFirestore(() => getFirestore()),
-],
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

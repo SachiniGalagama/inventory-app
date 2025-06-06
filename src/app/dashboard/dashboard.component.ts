@@ -57,23 +57,23 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(
-     private dashboardService: DashboardService,
-  private inventoryService: InventoryService,
-  private authService: AuthService
+    private dashboardService: DashboardService,
+    private inventoryService: InventoryService,
+    private authService: AuthService,
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.authService.currentUser$.subscribe((user) => {
-    if (user) {
-      console.log('✅ Logged in:', user.uid);
-      this.loadDashboardData();
-    } else {
-      console.log('❌ Not logged in yet');
-    }
-  });
-}
+      if (user) {
+        console.log('✅ Logged in:', user.uid);
+        this.loadDashboardData();
+      } else {
+        console.log('❌ Not logged in yet');
+      }
+    });
+  }
 
-  loadDashboardData(){
+  loadDashboardData() {
     this.inventoryService.getInventoryItems$().subscribe((data) => {
       this.inventory = data;
       this.lowStockItems = data.filter(
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
         name: item.name,
         value: item.stock,
       }));
-      
+
       this.dashboardService.getForecast().subscribe((data) => {
         if (data?.predictions) {
           this.forecast = data.predictions;

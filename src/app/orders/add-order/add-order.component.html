@@ -3,12 +3,9 @@
 <form
   (ngSubmit)="addOrder()"
   #orderForm="ngForm"
-  class="order-form space-y-4 col-6 rounded shadow "
+  class="order-form space-y-4 col-6 rounded shadow"
 >
-  <div
-    *ngFor="let item of items; let i = index"
-    class=""
-  >
+  <div *ngFor="let item of items; let i = index" class="">
     <!-- Product Name -->
     <tr class="col-span-2 relative">
       <td><label class="block text-sm font-medium">Product Name</label></td>
@@ -113,24 +110,28 @@
   </div>
 
   <!-- Order Status Dropdown -->
-<div>
-  <td><label class="block text-sm font-medium mb-1">Order Status</label></td>
-  <td><select
-    [(ngModel)]="orderStatus"
-    name="orderStatus"
-    required
-    class="w-full border rounded px-2 py-1"
-    #orderStatusModel="ngModel"
-  >
-    <option [value]="'pending'">pending</option>
-    <option [value]="'shipped'">shipped</option>
-    <option [value]="'completed'">completed</option>
-  </select></td>
-  <p class="text-red-500 text-xs" *ngIf="orderStatusModel.invalid && orderStatusModel.touched">
-    Status is required.
-  </p>
-</div>
-
+  <div>
+    <td><label class="block text-sm font-medium mb-1">Order Status</label></td>
+    <td>
+      <select
+        [(ngModel)]="orderStatus"
+        name="orderStatus"
+        required
+        class="w-full border rounded px-2 py-1"
+        #orderStatusModel="ngModel"
+      >
+        <option [value]="'pending'">pending</option>
+        <option [value]="'shipped'">shipped</option>
+        <option [value]="'completed'">completed</option>
+      </select>
+    </td>
+    <p
+      class="text-red-500 text-xs"
+      *ngIf="orderStatusModel.invalid && orderStatusModel.touched"
+    >
+      Status is required.
+    </p>
+  </div>
 
   <!-- Add Item Button -->
 

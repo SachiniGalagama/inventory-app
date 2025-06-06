@@ -52,11 +52,10 @@ export class AddInventoryComponent implements OnInit {
       return;
     }
     this.nameSuggestions = this.inventoryItems
-      .map(i => i.name)
+      .map((i) => i.name)
       .filter(
-        name =>
-          name.toLowerCase().startsWith(input) &&
-          name.toLowerCase() !== input
+        (name) =>
+          name.toLowerCase().startsWith(input) && name.toLowerCase() !== input,
       )
       .slice(0, 5);
   }
@@ -68,18 +67,21 @@ export class AddInventoryComponent implements OnInit {
       return;
     }
     // Get unique categories matching input
-    const categories = Array.from(new Set(this.inventoryItems.map(i => i.category)));
+    const categories = Array.from(
+      new Set(this.inventoryItems.map((i) => i.category)),
+    );
     this.categorySuggestions = categories
       .filter(
-        cat =>
-          cat.toLowerCase().startsWith(input) &&
-          cat.toLowerCase() !== input
+        (cat) =>
+          cat.toLowerCase().startsWith(input) && cat.toLowerCase() !== input,
       )
       .slice(0, 5);
   }
 
   selectNameSuggestion(name: string) {
-    const selected = this.inventoryItems.find(i => i.name.toLowerCase() === name.toLowerCase());
+    const selected = this.inventoryItems.find(
+      (i) => i.name.toLowerCase() === name.toLowerCase(),
+    );
     if (selected) {
       this.item.name = selected.name;
       this.item.category = selected.category;
@@ -105,8 +107,8 @@ export class AddInventoryComponent implements OnInit {
     if (existing) {
       // Add the quantity of the new item to the existing stock
       const newStock = (existing.stock || 0) + (this.item.stock || 0);
-//       const newStock = this.item.stock || 0;  // Just take user's input as new stock
-// await this.inventoryService.updateItem(existing.id!, { stock: newStock });
+      //       const newStock = this.item.stock || 0;  // Just take user's input as new stock
+      // await this.inventoryService.updateItem(existing.id!, { stock: newStock });
 
       // Update the existing item's stock
       await this.inventoryService.updateItem(existing.id!, { stock: newStock });

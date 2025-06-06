@@ -13,10 +13,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class DashboardService {
-  
   constructor(private firestore: Firestore) {}
 
-  
   getInventory(): Observable<any[]> {
     const inventoryRef = collection(this.firestore, 'inventory');
     return collectionData(inventoryRef, { idField: 'id' }) as Observable<any[]>;

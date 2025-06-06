@@ -1,9 +1,15 @@
 <div class="filters">
   <label for="categoryFilter">
     Filter by category:
-    <select id="categoryFilter" [(ngModel)]="categoryFilter" (change)="applyFilter()">
+    <select
+      id="categoryFilter"
+      [(ngModel)]="categoryFilter"
+      (change)="applyFilter()"
+    >
       <option value="">All</option>
-      <option *ngFor="let cat of uniqueCategories" [value]="cat">{{ cat }}</option>
+      <option *ngFor="let cat of uniqueCategories" [value]="cat">
+        {{ cat }}
+      </option>
     </select>
   </label>
 
@@ -34,7 +40,7 @@
       <td>{{ item.stock }}</td>
       <!-- <td>{{ item.avgDailyConsumption != null ? (item.avgDailyConsumption | number: "1.1-1") : 'N/A' }}
 </td> -->
-      <td>{{ item.estimatedDaysLeft ?? 'Unknown' }}</td>
+      <td>{{ item.estimatedDaysLeft ?? "Unknown" }}</td>
       <td class="risk-level">{{ item.risk }}</td>
     </tr>
   </tbody>

@@ -23,20 +23,38 @@ export class InventoryService {
   private auth = inject(Auth);
 
   private getUserId(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = this.auth.onAuthStateChanged((user) => {
-      unsubscribe();
-      if (user) {
-        console.log('[getUserId] Logged-in UID:', user.uid); // ✅ Debug log
-        resolve(user.uid);
-      } else {
-        console.warn('[getUserId] No user logged in'); // ✅ Debug log
-        reject(new Error('User not logged in'));
-      }
+    return new Promise((resolve, reject) => {
+      const unsubscribe = this.auth.onAuthStateChanged((user) => {
+        unsubscribe();
+        if (user) {
+          console.log('[getUserId] Logged-in UID:', user.uid);
+          resolve(user.uid);
+        } else {
+          console.warn('[getUserId] No user logged in');
+          reject(new Error('User not logged in'));
+        }
+      });
     });
-  });
-}
+  }
 
+  getInventoryItems$(): Observable<InventoryItem[]> {
+    const userId = this.auth.currentUser?.uid;
+    if (!userId) throw new Error('User not logged in');
+    const itemsRef = collection(this.firestore, 'inventory');
+    const q = query(itemsRef, where('userId', '==', userId));
+    return collectionData(q, { idField: 'id' }) as Observable<InventoryItem[]>;
+  }
+
+  async getItems(userId?: string): Promise<InventoryItem[]> {
+    userId = userId || (await this.getUserId());
+
+    const itemsRef = collection(this.firestore, 'inventory');
+    const q = query(itemsRef, where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(
+      (doc) => ({ id: doc.id, ...doc.data() }) as InventoryItem,
+    );
+  }
   async addItem(item: InventoryItem, userId?: string) {
     userId = userId || (await this.getUserId());
     const itemsRef = collection(this.firestore, 'inventory');
@@ -59,30 +77,10 @@ export class InventoryService {
       });
     }
   }
-
-getInventoryItems$(): Observable<InventoryItem[]> {
-  const userId = this.auth.currentUser?.uid;
-  if (!userId) throw new Error('User not logged in');
-  const itemsRef = collection(this.firestore, 'inventory');
-  const q = query(itemsRef, where('userId', '==', userId));
-  return collectionData(q, { idField: 'id' }) as Observable<InventoryItem[]>;
-}
-
-  async getItems(userId?: string): Promise<InventoryItem[]> {
-    userId = userId || (await this.getUserId());
-    
-    const itemsRef = collection(this.firestore, 'inventory');
-    const q = query(itemsRef, where('userId', '==', userId));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() }) as InventoryItem,
-    );
-  }
-
   async updateItem(itemId: string, data: Partial<InventoryItem>) {
-  const itemRef = doc(this.firestore, 'inventory', itemId);
-  await updateDoc(itemRef, data);
-}
+    const itemRef = doc(this.firestore, 'inventory', itemId);
+    await updateDoc(itemRef, data);
+  }
 
   async deleteItem(itemId: string) {
     const itemRef = doc(this.firestore, 'inventory', itemId);
@@ -96,7 +94,10 @@ getInventoryItems$(): Observable<InventoryItem[]> {
     return data ? ({ id: itemId, ...data } as InventoryItem) : null;
   }
 
-  async getItemByName(name: string, userId?: string): Promise<InventoryItem | undefined> {
+  async getItemByName(
+    name: string,
+    userId?: string,
+  ): Promise<InventoryItem | undefined> {
     userId = userId || (await this.getUserId());
     const itemsRef = collection(this.firestore, 'inventory');
     const q = query(
@@ -143,40 +144,53 @@ getInventoryItems$(): Observable<InventoryItem[]> {
     const forecasts = await this.forecastNextWeekRequirements(userId);
     const items = await this.getItems(userId);
 
-    return forecasts.map((forecast) => {
-      const item = items.find((i) => i.id === forecast.productId);
-      const daysLeft = item && forecast.nextWeekQty > 0
-        ? Math.floor(item.stock / (forecast.nextWeekQty / 7))
-        : null;
-      return {
-        ...forecast,
-        stock: item?.stock || 0,
-        estimatedDaysLeft: daysLeft,
-        risk:
-          daysLeft === null ? 'Unknown'
-            : daysLeft <= 7 ? 'High'
-            : daysLeft <= 14 ? 'Medium'
-            : 'Low',
-      };
-    }).sort((a, b) => (a.estimatedDaysLeft ?? 9999) - (b.estimatedDaysLeft ?? 9999));
+    return forecasts
+      .map((forecast) => {
+        const item = items.find((i) => i.id === forecast.productId);
+        const daysLeft =
+          item && forecast.nextWeekQty > 0
+            ? Math.floor(item.stock / (forecast.nextWeekQty / 7))
+            : null;
+        return {
+          ...forecast,
+          stock: item?.stock || 0,
+          estimatedDaysLeft: daysLeft,
+          risk:
+            daysLeft === null
+              ? 'Unknown'
+              : daysLeft <= 7
+                ? 'High'
+                : daysLeft <= 14
+                  ? 'Medium'
+                  : 'Low',
+        };
+      })
+      .sort(
+        (a, b) => (a.estimatedDaysLeft ?? 9999) - (b.estimatedDaysLeft ?? 9999),
+      );
   }
 
-  async calculateReorderSuggestions(leadTime = 7, userId?: string): Promise<any[]> {
+  async calculateReorderSuggestions(
+    leadTime = 7,
+    userId?: string,
+  ): Promise<any[]> {
     const forecasts = await this.forecastNextWeekRequirements(userId);
     const items = await this.getItems(userId);
 
-    return forecasts.map((forecast) => {
-      const item = items.find((i) => i.id === forecast.productId);
-      const reorderQty = forecast.nextWeekQty - (item?.stock || 0);
-      return {
-        ...forecast,
-        stock: item?.stock || 0,
-        leadTime,
-        expectedUsage: forecast.nextWeekQty,
-        reorderQuantity: reorderQty > 0 ? Math.ceil(reorderQty) : 0,
-        needsReorder: reorderQty > 0,
-      };
-    }).filter(item => item.needsReorder);
+    return forecasts
+      .map((forecast) => {
+        const item = items.find((i) => i.id === forecast.productId);
+        const reorderQty = forecast.nextWeekQty - (item?.stock || 0);
+        return {
+          ...forecast,
+          stock: item?.stock || 0,
+          leadTime,
+          expectedUsage: forecast.nextWeekQty,
+          reorderQuantity: reorderQty > 0 ? Math.ceil(reorderQty) : 0,
+          needsReorder: reorderQty > 0,
+        };
+      })
+      .filter((item) => item.needsReorder);
   }
 
   async forecastNextWeekRequirements(userId?: string): Promise<
@@ -190,7 +204,10 @@ getInventoryItems$(): Observable<InventoryItem[]> {
     userId = userId || (await this.getUserId());
 
     const ordersSnap = await getDocs(
-      query(collection(this.firestore, 'orders'), where('userId', '==', userId)),
+      query(
+        collection(this.firestore, 'orders'),
+        where('userId', '==', userId),
+      ),
     );
 
     const consumptionMap: Record<
@@ -234,41 +251,42 @@ getInventoryItems$(): Observable<InventoryItem[]> {
 
   async getDemandLevels(userId?: string): Promise<any[]> {
     userId = userId || (await this.getUserId());
-
     const ordersSnap = await getDocs(
-      query(collection(this.firestore, 'orders'), where('userId', '==', userId)),
+      query(
+        collection(this.firestore, 'orders'),
+        where('userId', '==', userId),
+      ),
     );
     const orderItems: Record<string, number> = {};
-
     for (const docSnap of ordersSnap.docs) {
       const order = docSnap.data();
       if (!order['items']) continue;
 
       for (const item of order['items']) {
         if (!item.productId) continue;
-        orderItems[item.productId] = (orderItems[item.productId] || 0) + item.quantity;
+        orderItems[item.productId] =
+          (orderItems[item.productId] || 0) + item.quantity;
       }
     }
-
     const itemsSnap = await getDocs(
-      query(collection(this.firestore, 'inventory'), where('userId', '==', userId)),
+      query(
+        collection(this.firestore, 'inventory'),
+        where('userId', '==', userId),
+      ),
     );
     const items = itemsSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
     const allQuantities = Object.values(orderItems);
     const max = Math.max(...allQuantities, 0);
     const min = Math.min(...allQuantities, 0);
     const range = max - min;
     const highThreshold = min + range * 0.66;
     const mediumThreshold = min + range * 0.33;
-
     const demandData = items.map((item) => {
       const soldQty = orderItems[item.id] || 0;
       let demand: 'High' | 'Medium' | 'Low' = 'Low';
 
       if (soldQty >= highThreshold) demand = 'High';
       else if (soldQty >= mediumThreshold) demand = 'Medium';
-
       return {
         ...item,
         soldQty,
