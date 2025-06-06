@@ -26,6 +26,17 @@ import { AddOrderComponent } from './orders/add-order/add-order.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EditOrderComponent } from './orders/edit-order/edit-order.component';
+import { LowStockModalComponent } from './low-stock-modal/low-stock-modal.component';
+import { ForecastComponent } from './forecast/forecast.component';
+import { NgChartsModule } from 'ng2-charts';
+import { ReorderComponent } from './reorder/reorder.component';
+import { NextWeekInventoryComponent } from './next-week-inventory/next-week-inventory.component';
+import { DemandForecastComponent } from './demand-forecast/demand-forecast.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
@@ -41,21 +52,28 @@ import { EditOrderComponent } from './orders/edit-order/edit-order.component';
     InventoryListComponent,
     OrderListComponent,
     AddOrderComponent,
-    EditOrderComponent
+    EditOrderComponent,
+    LowStockModalComponent,
+    ForecastComponent,
+    ReorderComponent,
+    NextWeekInventoryComponent,
+    DemandForecastComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     NgxChartsModule,
-    ReactiveFormsModule, 
-    CommonModule
+    ReactiveFormsModule,
+    CommonModule,
+    NgChartsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

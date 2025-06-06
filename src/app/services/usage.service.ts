@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collectionData, collection, query, where } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collectionData,
+  collection,
+  query,
+  where,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsageService {
   constructor(private firestore: Firestore) {}

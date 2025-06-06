@@ -1,5 +1,9 @@
-<h2>Orders List</h2>
-<table>
+<div class="orders-head d-flex">
+  <h2>Orders List</h2>
+  <button class="add-new" routerLink="/add-order">Add New</button>
+</div>
+
+<table class="w-100">
   <tr>
     <th>Order ID</th>
     <th>Date</th>
@@ -9,7 +13,7 @@
   </tr>
   <tr *ngFor="let order of orders">
     <td>{{ order.id }}</td>
-    <td>{{ order.orderDate?.toDate() | date:'short' }}</td>
+    <td>{{ order.orderDate?.toDate() | date: "short" }}</td>
     <td>{{ order.totalPrice }}</td>
     <td>{{ order.status }}</td>
     <td>

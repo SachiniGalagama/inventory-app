@@ -1,0 +1,54 @@
+.demand-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.demand-table th,
+.demand-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.demand-table thead {
+  background-color: #1976d2; /* Primary Blue */
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.demand-table tbody tr:hover {
+  background-color: #f5faff;
+  transition: background-color 0.3s ease;
+}
+
+.demand-label {
+  display: inline-block;
+  padding: 4px 10px;
+  font-weight: 600;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+/* Demand level colors */
+.demand-label.low {
+  background-color: #43a047; /* Green */
+}
+
+.demand-label.medium {
+  background-color: #fbc02d; /* Yellow */
+  color: #444;
+}
+
+.demand-label.high {
+  background-color: #e53935; /* Red */
+}
+
+.demand-label.unknown {
+  background-color: #9e9e9e; /* Gray */
+}

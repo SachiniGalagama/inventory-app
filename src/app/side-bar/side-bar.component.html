@@ -1,9 +1,49 @@
 <nav class="sidebar">
-    <ul>
-    <li><i class="fa-solid fa-house"></i> Dashboard</li>
-    <li><i class="fa-solid fa-box"></i> Inventory</li>
-    <li><i class="fa-solid fa-clipboard-list"></i> Orders</li>
-    <li><i class="fa-solid fa-chart-line"></i> Reports</li>
-    <li><i class="fa-solid fa-gear"></i> Settings</li>
+  <a routerLink="/dashboard"
+    ><div class="brand-name"><h4>INVENTRIA</h4></div></a
+  >
+  <ul>
+    <li
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a routerLink="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+    </li>
+    <li routerLinkActive="active-link">
+      <a routerLink="/inventory"><i class="fa-solid fa-box"></i> Inventory</a>
+    </li>
+    <li routerLinkActive="active-link">
+      <a routerLink="/orders"
+        ><i class="fa-solid fa-clipboard-list"></i> Orders</a
+      >
+    </li>
+    <li>
+      <a href="#" (click)="toggleInsights(); $event.preventDefault()">
+        <i class="fa-solid fa-chart-line"></i> AI Insights
+        <i class="fa fa-caret-down" style="float: right"></i>
+      </a>
+    </li>
+    <ul class="ai-insights-ul" *ngIf="showInsights">
+      <li class="ai-insights">
+        <a routerLink="stock-out" routerLinkActive="active-link"
+          >Stockout Risk</a
+        >
+      </li>
+      <li class="ai-insights">
+        <a routerLink="reorder" routerLinkActive="active-link"
+          >Reorder Suggestion</a
+        >
+      </li>
+      <li class="ai-insights">
+        <a routerLink="nextweek-requirement" routerLinkActive="active-link"
+          >Next Week Requirement</a
+        >
+      </li>
+      <li class="ai-insights">
+        <a routerLink="demand-forecast" routerLinkActive="active-link"
+          >Demand Analysis</a
+        >
+      </li>
+    </ul>
   </ul>
 </nav>

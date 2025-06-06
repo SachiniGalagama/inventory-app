@@ -1,6 +1,21 @@
-<app-navbar></app-navbar>
-<!-- <app-side-bar></app-side-bar> -->
+<!-- Top navbar -->
+<app-navbar *ngIf="showLayout"></app-navbar>
 
-<div class="main-content">
+<!-- Side navigation -->
+<app-side-bar *ngIf="showLayout"></app-side-bar>
+
+<!-- Only show navbar + sidebar layout when needed -->
+<div *ngIf="showLayout; else fullScreenContent" class="app-layout">
+  <app-navbar></app-navbar>
+  <app-side-bar></app-side-bar>
+  <div class="main-content">
     <router-outlet></router-outlet>
+  </div>
 </div>
+
+<!-- Full screen content for login/register -->
+<ng-template #fullScreenContent>
+  <div class="full-screen">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

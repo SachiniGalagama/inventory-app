@@ -1,21 +1,160 @@
-<h2>Add New Order</h2>
-<form (ngSubmit)="addOrder()">
-  <div *ngFor="let item of items; let i = index">
-    <select [(ngModel)]="item.productId" name="product{{i}}" (change)="onProductChange(i)" required>
-      <option value="" disabled selected>Select product</option>
-      <option *ngFor="let invItem of inventoryItems" [value]="invItem.id">{{ invItem.name }}</option>
-    </select>
+<h2 class="text-xl font-bold mb-4">Add New Order</h2>
 
-    <input type="number" [(ngModel)]="item.quantity" name="quantity{{i}}" min="1" (change)="onQuantityChange()" required />
-    <input type="number" [(ngModel)]="item.unitPrice" name="unitPrice{{i}}" (change)="onQuantityChange()" placeholder="Unit Price" required />
+<form
+  (ngSubmit)="addOrder()"
+  #orderForm="ngForm"
+  class="order-form space-y-4 col-6 rounded shadow"
+>
+  <div *ngFor="let item of items; let i = index" class="">
+    <!-- Product Name -->
+    <tr class="col-span-2 relative">
+      <td><label class="block text-sm font-medium">Product Name</label></td>
+      <td>
+        <input
+          class="w-full border rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="item.productName"
+          name="productName{{ i }}"
+          (input)="suggestProductNames(i)"
+          (blur)="normalizeProductName(i)"
+          required
+          #productName="ngModel"
+          placeholder="Enter product name"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="productName.invalid && productName.touched"
+        >
+          Product name is required.
+        </p>
 
-    <span>Total: {{ item.totalPrice }}</span>
+        <!-- Suggestions -->
+        <ul
+          *ngIf="suggestions[i]?.length"
+          class="absolute z-10 bg-white border mt-1 w-full max-h-32 overflow-y-auto rounded shadow"
+        >
+          <li
+            *ngFor="let suggestion of suggestions[i]"
+            class="px-2 py-1 hover:bg-blue-100 cursor-pointer"
+            (click)="selectSuggestion(i, suggestion)"
+          >
+            {{ suggestion }}
+          </li>
+        </ul>
+      </td>
+    </tr>
 
-    <button type="button" (click)="removeItemRow(i)" *ngIf="items.length > 1">Remove</button>
+    <!-- Quantity -->
+    <tr>
+      <td><label class="block text-sm font-medium">Quantity</label></td>
+      <td>
+        <input
+          type="number"
+          class="w-full border rounded px-2 py-1"
+          [(ngModel)]="item.quantity"
+          name="quantity{{ i }}"
+          min="1"
+          required
+          #quantity="ngModel"
+          (change)="onQuantityChange()"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="quantity.invalid && quantity.touched"
+        >
+          Quantity must be at least 1.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Unit Price -->
+    <tr>
+      <td><label class="block text-sm font-medium">Unit Price</label></td>
+      <td>
+        <input
+          type="number"
+          class="w-full border rounded px-2 py-1"
+          [(ngModel)]="item.unitPrice"
+          name="unitPrice{{ i }}"
+          min="0.01"
+          required
+          #unitPrice="ngModel"
+          placeholder="Unit Price"
+          (change)="onQuantityChange()"
+        />
+        <p
+          class="text-red-500 text-xs"
+          *ngIf="unitPrice.invalid && unitPrice.touched"
+        >
+          Price must be positive.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Total & Remove -->
+    <tr class="flex flex-col justify-between items-start">
+      <td>
+        <span class="text-sm font-semibold">Total: {{ item.totalPrice }}</span>
+      </td>
+      <td>
+        <button
+          type="button"
+          (click)="removeItemRow(i)"
+          *ngIf="items.length > 1"
+          class="text-red-600 text-sm hover:underline text-white px-6 mb-2 mt-2 rounded"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
   </div>
-  <button type="button" (click)="addItemRow()">Add Item</button>
 
-  <p><strong>Total Price:</strong> {{ totalPrice }}</p>
+  <!-- Order Status Dropdown -->
+  <div>
+    <td><label class="block text-sm font-medium mb-1">Order Status</label></td>
+    <td>
+      <select
+        [(ngModel)]="orderStatus"
+        name="orderStatus"
+        required
+        class="w-full border rounded px-2 py-1"
+        #orderStatusModel="ngModel"
+      >
+        <option [value]="'pending'">pending</option>
+        <option [value]="'shipped'">shipped</option>
+        <option [value]="'completed'">completed</option>
+      </select>
+    </td>
+    <p
+      class="text-red-500 text-xs"
+      *ngIf="orderStatusModel.invalid && orderStatusModel.touched"
+    >
+      Status is required.
+    </p>
+  </div>
 
-  <button type="submit">Submit Order</button>
+  <!-- Add Item Button -->
+
+  <div class="submit-section">
+    <!-- Total Price -->
+    <p class="text-lg font-semibold mt-4">Total Price: {{ totalPrice }}</p>
+    <div class="add-submit">
+      <button
+        type="button"
+        (click)="addItemRow()"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        + Add Item
+      </button>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="orderForm.invalid"
+        class="mt-2 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+      >
+        Submit Order
+      </button>
+    </div>
+  </div>
 </form>

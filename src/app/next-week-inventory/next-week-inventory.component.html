@@ -1,0 +1,17 @@
+<h4>📦 Next Week's Inventory Forecast</h4>
+<table class="forecast-table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <!-- <th>Category</th> -->
+      <th>Expected Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of nextWeekForecast">
+      <td>{{ item.name }}</td>
+      <!-- <td>{{ item.category || "—" }}</td> -->
+      <td>{{ item.nextWeekQty }}</td>
+    </tr>
+  </tbody>
+</table>

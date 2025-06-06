@@ -14,6 +14,6 @@ export interface Order {
   items: OrderItem[];
   totalPrice: number;
   status: string;
-  orderDate: Timestamp;   // <-- Required for your template
+  orderDate: Timestamp; // <-- Required for your template
   createdAt: Timestamp;
 }
