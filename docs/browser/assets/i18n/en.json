@@ -1,0 +1,7 @@
+{
+  "DASHBOARD": "Dashboard",
+  "INVENTORY": "Inventory",
+  "ORDERS": "Orders",
+  "LOGOUT": "Logout",
+  "LOW_STOCK": "Low Stock Alert"
+}
